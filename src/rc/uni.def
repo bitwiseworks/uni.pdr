@@ -1,0 +1,20 @@
+LIBRARY UNI INITINSTANCE TERMINSTANCE
+DESCRIPTION 'UNI Port Driver'
+PROTMODE
+DATA MULTIPLE NONSHARED LOADONCALL
+CODE LOADONCALL
+EXPORTS
+   SPLPDENUMPORT      = SplPdEnumPort         @501
+   SPLPDINSTALLPORT   = SplPdInstallPort      @502
+   SPLPDGETPORTICON   = SplPdGetPortIcon      @503
+   SPLPDQUERYPORT     = SplPdQueryPort        @504
+   SPLPDSETPORT       = SplPdSetPort          @505
+   SPLPDREMOVEPORT    = SplPdRemovePort       @506
+   SPLPDOPEN          = SplPdOpen             @508
+   SPLPDWRITE         = SplPdWrite            @509
+   SPLPDABORTDOC      = SplPdAbortDoc         @510
+   SPLPDNEWPAGE       = SplPdNewPage          @511
+   SPLPDCLOSE         = SplPdClose            @512
+   SPLPDQUERY         = SplPdQuery            @513
+   SPLPDSET           = SplPdSet              @514
+

@@ -1,0 +1,42 @@
+BASE=SMB
+DEF_PORTNAME=SMB
+
+ICCOPTS=-Gd-e- -Sp1 -Ss+ -Ms -C+ -Fo$@ -Dcdecl= -D_cdecl= -Rn -O -Wpro -Q+ -Yp+ -Ss+
+LINKOPTS=/NOFREEFORMAT /MAP /A:16 /DEBUG  /PM:PM
+
+!IFDEF DEBUG
+ICCOPTS=-Gd-e- -Sp1 -Ss+ -Ms -C+ -Fo$@ -Dcdecl= -D_cdecl= -Rn -O -Wpro -Q+ -Yp+ -Ti
+LINKOPTS=$(LINKOPTS) /CO
+!ENDIF
+
+$(BASE).PDR:                    $(BASE).DLL
+        copy $(BASE).DLL $(BASE).PDR
+        del $(BASE).DLL
+
+$(BASE).DLL:                    $(BASE).OBJ \
+                                $(BASE).RES
+        ILINK $(LINKOPTS) @<<
+$(BASE)
+$(BASE).DLL
+$(BASE)
+OS2386
+$(BASE)
+<<
+        RC $(BASE).RES $(BASE).DLL
+        ea2 -e DEFAULT_PORT=$(DEF_PORTNAME) $(BASE).DLL
+
+$(BASE).RES:                    $(BASE).RC \
+                                $(BASE).H
+        RC -r $(BASE).RC $(BASE).RES
+
+$(BASE).OBJ:                    $(BASE).C \
+                                $(BASE).H
+        ICC $(ICCOPTS) $(BASE).C
+
+clean:
+        if exist $(BASE).PDR del $(BASE).PDR
+        if exist $(BASE).DLL del $(BASE).DLL
+        if exist $(BASE).SYM del $(BASE).SYM
+        if exist $(BASE).MAP del $(BASE).MAP
+        if exist $(BASE).RES del $(BASE).RES
+        if exist $(BASE).OBJ del $(BASE).OBJ
