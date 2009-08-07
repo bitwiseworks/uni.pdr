@@ -1,0 +1,13 @@
+#
+# Universal port driver
+# kBuild configuration variables
+# Copyright (C) netlabs.org 2003-2009
+# See COPYING for license informations
+#
+#
+# edit this file to change version numbering
+# in bldlevel informations
+#
+VERSION	= 1.0.0
+BUILD	= alpha1
+TOOLKIT = f:/dev/toolkit

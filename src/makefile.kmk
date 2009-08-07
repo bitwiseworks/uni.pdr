@@ -1,0 +1,96 @@
+#
+# Universal port driver
+# kBuild makefile
+# Copyright (C) netlabs.org 2003-2009
+# See COPYING for license informations
+#
+# please define (as env variables or kmk command line) the following variables before starting:
+# BUILD_PLATFORM = os2
+# BUILD_TYPE = release|debug
+#
+# Copy Config.km_ to Config.kmk and edit it to match your installation.
+#
+
+DEPTH = ..
+
+TOOL = GCC3OMF
+
+DLLS = uni
+
+# required to get IPFC compiler to work correctly
+export IPFC=$(TOOLKIT)\IPFC
+
+uni_RCTOOL =OPENWATCOM
+TOOL_OPENWATCOM_RCFLAGS += -i=$(TOOLKIT)/h
+
+uni_SOURCES = \
+	rc/uni.rc \
+	uni.def \
+	uni.c
+
+uni_CFLAGS = -Zomf
+uni_CFLAGS.release = -s -O3 -march=pentium -mcpu=pentium4
+uni_CFLAGS.debug = -g -O0 -DDEBUG
+uni_LDFLAGS = -Zomf -Zno-fork -Zmap -Zbin-files
+uni_LDFLAGS.release = -s
+uni_LDFLAGS.debug = -g
+
+uni_DEFS =
+uni_INCS = ./h ./rc
+
+uni_CLEAN = /rc/description.rc $(PATH_BIN)/uni.pdr $(PATH_BIN)/uni.dll
+
+#build other files (e.g. help)
+OTHERS = /rc/uni.ipf $(PATH_BIN)/uni.hlp $(PATH_BIN)/readme.txt $(PATH_BIN)/uni.pdr
+OTHER_CLEAN = $(PATH_BIN)/uni.hlp $(PATH_BIN)/readme.txt
+
+
+# packaging stuffs
+ifeq ($(BUILD_TYPE),debug)
+  PACKAGE_NAME = uni-$(subst .,_,$(VERSION))-$(BUILD)-debug
+else
+  PACKAGE_NAME = uni-$(subst .,_,$(VERSION))-$(BUILD)
+endif
+PACKING += $(PATH_ROOT)/dist/$(PACKAGE_NAME).zip
+OTHER_CLEAN += $(PATH_ROOT)/dist/$(PACKAGE_NAME).zip
+
+# now include standard code
+include $(PATH_KBUILD)/rules.kMk
+
+# here follows standard gnu make inference rules
+
+# add new dependancy on build level info
+rc/uni.rc : rc/description.rc
+
+# update bldlevel info
+rc/description.rc: config.kmk
+	@echo Writing build level informations
+	@cp rc/description.rc_ rc/description.rc
+	@BldLevelInf0.cmd $(VERSION) $(BUILD)
+
+# substitute macros in ipf file
+/rc/uni.ipf: Config.kmk ./rc/uni.ipf
+	$(QUIET)$(SED) "s;_VERSION_;$(VERSION);g" ./rc/uni.ipf \
+		| $(SED) "s;_BUILD_;$(BUILD);g" \
+		> uni.ipf
+
+# compile english help file
+$(PATH_BIN)/uni.hlp: uni.ipf ./rc/uni.h ./H/hmacros.h config.kmk
+	-gcc -E -I./h -I./rc -x c uni.ipf > uni.i
+	-@mkdir $(PATH_BIN)
+	$(TOOLKIT)\bin\ipfc.exe uni.i $(PATH_BIN)/uni.hlp /COUNTRY=001 /CODEPAGE=850
+	rm uni.i
+	rm uni.ipf
+
+
+# substitute macros in docs
+$(PATH_BIN)/readme.txt: Config.kmk readme.txt
+	$(QUIET)$(SED) "s;_VERSION_;$(VERSION);g" readme.txt \
+		| $(SED) "s;_BUILD_;$(BUILD);g" \
+		> $(PATH_BIN)/readme.txt
+
+#rename the dll to pdr
+$(PATH_BIN)/uni.pdr: config.kmk
+	cp $(PATH_TARGET)/uni/uni.dll $(PATH_BIN)/uni.pdr
+
+
