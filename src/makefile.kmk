@@ -38,21 +38,23 @@ uni_LDFLAGS.debug = -g
 uni_DEFS =
 uni_INCS = ./h ./rc
 
-uni_CLEAN = /rc/description.rc $(PATH_BIN)/uni.pdr $(PATH_BIN)/uni.dll
+uni_DLLSUFF = .pdr
+
+uni_CLEAN = /rc/description.rc $(PATH_BIN)/uni.pdr
 
 #build other files (e.g. help)
-OTHERS = /rc/uni.ipf $(PATH_BIN)/uni.hlp $(PATH_BIN)/readme.txt $(PATH_BIN)/uni.pdr
+OTHERS = /rc/uni.ipf $(PATH_BIN)/uni.hlp $(PATH_BIN)/readme.txt
 OTHER_CLEAN = $(PATH_BIN)/uni.hlp $(PATH_BIN)/readme.txt
 
 
 # packaging stuffs
 ifeq ($(BUILD_TYPE),debug)
-  PACKAGE_NAME = uni-$(subst .,_,$(VERSION))-$(BUILD)-debug
+  PACKAGE_NAME = uni-$(subst .,_,$(VERSION))-$(BUILD)-debug.zip
 else
-  PACKAGE_NAME = uni-$(subst .,_,$(VERSION))-$(BUILD)
+  PACKAGE_NAME = uni-$(subst .,_,$(VERSION))-$(BUILD).zip
 endif
-PACKING += $(PATH_ROOT)/dist/$(PACKAGE_NAME).zip
-OTHER_CLEAN += $(PATH_ROOT)/dist/$(PACKAGE_NAME).zip
+PACKING += $(PATH_ROOT)/dist/$(PACKAGE_NAME)
+OTHER_CLEAN += $(PATH_ROOT)/dist/$(PACKAGE_NAME)
 
 # now include standard code
 include $(PATH_KBUILD)/rules.kMk
@@ -89,8 +91,12 @@ $(PATH_BIN)/readme.txt: Config.kmk readme.txt
 		| $(SED) "s;_BUILD_;$(BUILD);g" \
 		> $(PATH_BIN)/readme.txt
 
-#rename the dll to pdr
-$(PATH_BIN)/uni.pdr: config.kmk
-	cp $(PATH_TARGET)/uni/uni.dll $(PATH_BIN)/uni.pdr
+# final: zip all files!
+$(PATH_ROOT)/dist/$(PACKAGE_NAME): \
+		$(PATH_BIN)/uni.pdr
+	$(QUIET)$(MKDIR) -p $(PATH_ROOT)/dist                              
+	$(QUIET)$(RM) -f $@
+	-ea2.cmd -e DEFAULT_PORT=UNI $(PATH_BIN)/uni.pdr
+	$(QUIET)zip -9 -j $@ $(PATH_BIN)/* 
 
 
