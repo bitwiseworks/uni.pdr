@@ -24,9 +24,24 @@ uni_RCTOOL =OPENWATCOM
 TOOL_OPENWATCOM_RCFLAGS += -i=$(TOOLKIT)/h
 
 uni_SOURCES = \
-	rc/uni.rc \
 	uni.def \
 	uni.c
+
+# english source
+DLLS += uni_en
+uni_en_EXTENDS = uni
+uni_en_NAME = uni
+uni_en_INST = bin/en/
+uni_en_SOURCES = $(uni_SOURCES) en/uni.rc
+uni_en_CLEAN = $(PATH_BIN)/en/uni.pdr
+
+# german source
+DLLS += uni_de
+uni_de_EXTENDS = uni
+uni_de_NAME = uni
+uni_de_INST = bin/de/
+uni_de_SOURCES = $(uni_SOURCES) de/uni.rc
+uni_de_CLEAN = $(PATH_BIN)/de/uni.pdr
 
 uni_CFLAGS = -Zomf
 uni_CFLAGS.release = -s -O3 -march=pentium -mcpu=pentium4
@@ -36,15 +51,20 @@ uni_LDFLAGS.release = -s
 uni_LDFLAGS.debug = -g
 
 uni_DEFS =
-uni_INCS = ./h ./rc
+uni_INCS = ./h
 
 uni_DLLSUFF = .pdr
 
-uni_CLEAN = /rc/description.rc $(PATH_BIN)/uni.pdr
+uni_CLEAN = description.rc $(PATH_BIN)/uni.pdr
 
-#build other files (e.g. help)
-OTHERS = /rc/uni.ipf $(PATH_BIN)/uni.hlp $(PATH_BIN)/readme.txt
-OTHER_CLEAN = $(PATH_BIN)/uni.hlp $(PATH_BIN)/readme.txt
+#build other files en (e.g. help)
+OTHERS = /en/uni.ipf $(PATH_BIN)/en/uni.hlp $(PATH_BIN)/en/readme.txt
+OTHER_CLEAN = $(PATH_BIN)/en/uni.hlp $(PATH_BIN)/en/readme.txt
+
+#build other files de (e.g. help)
+OTHERS += /de/uni.ipf $(PATH_BIN)/de/uni.hlp $(PATH_BIN)/de/readme.txt
+OTHER_CLEAN += $(PATH_BIN)/de/uni.hlp $(PATH_BIN)/de/readme.txt
+
 
 #install some more files
 INSTALLS = docs
@@ -67,41 +87,65 @@ include $(PATH_KBUILD)/rules.kMk
 # here follows standard gnu make inference rules
 
 # add new dependancy on build level info
-rc/uni.rc : rc/description.rc
+en/uni.rc : description.rc
+de/uni.rc : description.rc
 
 # update bldlevel info
-rc/description.rc: config.kmk
+description.rc: config.kmk
 	@echo Writing build level informations
-	@cp rc/description.rc_ rc/description.rc
+	@cp description.rc_ description.rc
 	@BldLevelInf0.cmd $(VERSION) $(BUILD)
 
-# substitute macros in ipf file
-/rc/uni.ipf: Config.kmk ./rc/uni.ipf
-	$(QUIET)$(SED) "s;_VERSION_;$(VERSION);g" ./rc/uni.ipf \
+# substitute macros in ipf file en
+/en/uni.ipf: Config.kmk ./en/uni.ipf
+	$(QUIET)$(SED) "s;_VERSION_;$(VERSION);g" ./en/uni.ipf \
 		| $(SED) "s;_BUILD_;$(BUILD);g" \
-		> uni.ipf
+		> uni_en.ipf
+
+# substitute macros in ipf file de
+/de/uni.ipf: Config.kmk ./de/uni.ipf
+	$(QUIET)$(SED) "s;_VERSION_;$(VERSION);g" ./de/uni.ipf \
+		| $(SED) "s;_BUILD_;$(BUILD);g" \
+		> uni_de.ipf
 
 # compile english help file
-$(PATH_BIN)/uni.hlp: uni.ipf ./uni.h ./H/hmacros.h config.kmk
-	-gcc -E -I./h -I./rc -x c uni.ipf > uni.i
+$(PATH_BIN)/en/uni.hlp: en/uni.ipf ./uni.h ./H/hmacros.h config.kmk
+	-gcc -E -I./h -I./en -x c uni_en.ipf > uni_en.i
 	-@mkdir $(PATH_BIN)
-	$(TOOLKIT)\bin\ipfc.exe uni.i $(PATH_BIN)/uni.hlp /COUNTRY=001 /CODEPAGE=850
+	-@mkdir $(PATH_BIN)/en
+	$(TOOLKIT)\bin\ipfc.exe uni_en.i $(PATH_BIN)/en/uni.hlp /COUNTRY=001 /CODEPAGE=850
 	rm uni.i
-	rm uni.ipf
+	rm uni_en.ipf
 
+# compile german help file
+$(PATH_BIN)/de/uni.hlp: de/uni.ipf ./uni.h ./H/hmacros.h config.kmk
+	-gcc -E -I./h -I./de -x c uni_de.ipf > uni_de.i
+	-@mkdir $(PATH_BIN)
+	-@mkdir $(PATH_BIN)/de
+	$(TOOLKIT)\bin\ipfc.exe uni_de.i $(PATH_BIN)/de/uni.hlp /COUNTRY=001 /CODEPAGE=850
+	rm uni_de.i
+	rm uni_de.ipf
 
-# substitute macros in docs
-$(PATH_BIN)/readme.txt: Config.kmk readme.txt
-	$(QUIET)$(SED) "s;_VERSION_;$(VERSION);g" readme.txt \
+# substitute macros in docs en
+$(PATH_BIN)/en/readme.txt: Config.kmk en/readme.txt
+	$(QUIET)$(SED) "s;_VERSION_;$(VERSION);g" en/readme.txt \
 		| $(SED) "s;_BUILD_;$(BUILD);g" \
-		> $(PATH_BIN)/readme.txt
+		> $(PATH_BIN)/en/readme.txt
+
+# substitute macros in docs de
+$(PATH_BIN)/de/readme.txt: Config.kmk de/readme.txt
+	$(QUIET)$(SED) "s;_VERSION_;$(VERSION);g" de/readme.txt \
+		| $(SED) "s;_BUILD_;$(BUILD);g" \
+		> $(PATH_BIN)/de/readme.txt
+
 
 # final: zip all files!
 $(PATH_ROOT)/dist/$(PACKAGE_NAME): \
 		$(PATH_BIN)/uni.pdr
 	$(QUIET)$(MKDIR) -p $(PATH_ROOT)/dist                              
 	$(QUIET)$(RM) -f $@
-	-ea2.cmd -e DEFAULT_PORT=UNI $(PATH_BIN)/uni.pdr
+	-ea2.cmd -e DEFAULT_PORT=UNI $(PATH_BIN)/en/uni.pdr
+	-ea2.cmd -e DEFAULT_PORT=UNI $(PATH_BIN)/de/uni.pdr
 	$(QUIET)zip -9 -j $@ $(PATH_BIN)/* 
 
 
