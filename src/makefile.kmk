@@ -46,6 +46,11 @@ uni_CLEAN = /rc/description.rc $(PATH_BIN)/uni.pdr
 OTHERS = /rc/uni.ipf $(PATH_BIN)/uni.hlp $(PATH_BIN)/readme.txt
 OTHER_CLEAN = $(PATH_BIN)/uni.hlp $(PATH_BIN)/readme.txt
 
+#install some more files
+INSTALLS = docs
+docs_INST = bin/
+docs_SOURCES = uni.ico
+OTHER_CLEAN += $(PATH_BIN)/uni.ico
 
 # packaging stuffs
 ifeq ($(BUILD_TYPE),debug)
@@ -77,7 +82,7 @@ rc/description.rc: config.kmk
 		> uni.ipf
 
 # compile english help file
-$(PATH_BIN)/uni.hlp: uni.ipf ./rc/uni.h ./H/hmacros.h config.kmk
+$(PATH_BIN)/uni.hlp: uni.ipf ./uni.h ./H/hmacros.h config.kmk
 	-gcc -E -I./h -I./rc -x c uni.ipf > uni.i
 	-@mkdir $(PATH_BIN)
 	$(TOOLKIT)\bin\ipfc.exe uni.i $(PATH_BIN)/uni.hlp /COUNTRY=001 /CODEPAGE=850
