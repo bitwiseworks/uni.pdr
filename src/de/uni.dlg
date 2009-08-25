@@ -1,0 +1,47 @@
+#ifndef OS2_INCLUDED
+   #include <os2.h>
+#endif
+DLGINCLUDE 1 "UNI.h"
+
+DLGTEMPLATE IDD_UNI LOADONCALL MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG  "Port Properties - ", IDD_UNI, 15, 37, 232, 156, FS_NOBYTEALIGN | 
+            WS_VISIBLE | WS_SYNCPAINT, FCF_SYSMENU | FCF_TITLEBAR | 
+            FCF_NOBYTEALIGN
+            PRESPARAMS PP_FONTNAMESIZE, "9.WarpSans"
+    BEGIN
+        DEFPUSHBUTTON   "OK", DID_OK, 5, 5, 76, 14
+                        PRESPARAMS PP_FONTNAMESIZE, "9.WarpSans Bold"
+        PUSHBUTTON      "Cancel ", DID_CANCEL, 149, 5, 76, 14
+                        PRESPARAMS PP_FONTNAMESIZE, "9.WarpSans Bold"
+        GROUPBOX        "Universal port driver properties", GB_UNICFG, 5, 96, 
+                        220, 54
+                        PRESPARAMS PP_FOREGROUNDCOLOR, 0x00000000L
+                        PRESPARAMS PP_FONTNAMESIZE, "9.WarpSans Bold"
+        GROUPBOX        "Login as", 1024, 5, 53, 220, 40
+                        PRESPARAMS PP_FOREGROUNDCOLOR, 0x00000000L
+                        PRESPARAMS PP_FONTNAMESIZE, "9.WarpSans Bold"
+        LTEXT           "Workgroup:", DT_WORKGROUP, 13, 130, 53, 8, 
+                        DT_VCENTER
+        ENTRYFIELD      "", ID_WORKGROUP, 71, 131, 142, 8, ES_MARGIN
+        LTEXT           "Server:", DT_IP, 13, 116, 53, 8, DT_VCENTER
+        ENTRYFIELD      "", ID_IP, 71, 117, 142, 8, ES_MARGIN
+        LTEXT           "Printer:", DT_UNIQUEUE, 13, 102, 53, 8, DT_VCENTER
+        ENTRYFIELD      "", ID_UNIQUEUE, 71, 103, 142, 8, ES_MARGIN
+        AUTOCHECKBOX    "Send as binary file", ID_BINARY, 115, 148, 75, 8, 
+                        NOT WS_VISIBLE | WS_DISABLED
+        LTEXT           "User ID:", DT_USER, 13, 73, 53, 8, DT_VCENTER
+        ENTRYFIELD      "", ID_USER, 71, 74, 110, 8, ES_MARGIN
+        LTEXT           "Password:", DT_PASSWORD, 13, 59, 53, 10, DT_VCENTER
+        ENTRYFIELD      "", ID_PASSWORD, 71, 60, 110, 8, ES_MARGIN | 
+                        ES_UNREADABLE
+        GROUPBOX        "Number of copies", GB_COPIES, 5, 24, 220, 26
+                        PRESPARAMS PP_FOREGROUNDCOLOR, 0x00000000L
+                        PRESPARAMS PP_FONTNAMESIZE, "9.WarpSans Bold"
+        LTEXT           "Spool this job", DT_COPIES, 13, 30, 54, 8, 
+                        DT_VCENTER
+        LTEXT           "times to the server", DT_COPIES2, 104, 30, 83, 8, 
+                        DT_VCENTER
+        ENTRYFIELD      "", ID_COPIES, 71, 31, 23, 8, ES_MARGIN
+    END
+END
