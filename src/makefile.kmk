@@ -51,7 +51,7 @@ uni_LDFLAGS.release = -s
 uni_LDFLAGS.debug = -g
 
 uni_DEFS =
-uni_INCS = ./h
+uni_INCS = ./h 
 
 uni_DLLSUFF = .pdr
 
@@ -146,6 +146,6 @@ $(PATH_ROOT)/dist/$(PACKAGE_NAME): \
 	$(QUIET)$(RM) -f $@
 	-ea2.cmd -e DEFAULT_PORT=UNI $(PATH_BIN)/en/uni.pdr
 	-ea2.cmd -e DEFAULT_PORT=UNI $(PATH_BIN)/de/uni.pdr
-	$(QUIET)zip -9 -j $@ $(PATH_BIN)/* 
+	zip -9 -r $@ $(PATH_BIN)/* -x $(PATH_BIN)/uni.pdr
 
 
