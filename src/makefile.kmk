@@ -23,24 +23,20 @@ export IPFC=$(TOOLKIT)\IPFC
 uni_RCTOOL =OPENWATCOM
 TOOL_OPENWATCOM_RCFLAGS += -i=$(TOOLKIT)/h
 
-uni_SOURCES = \
+uni_main_SOURCES = \
 	uni.def \
 	uni.c
 
 # english source
-DLLS += uni_en
-uni_en_EXTENDS = uni
-uni_en_NAME = uni
-uni_en_INST = bin/en/
-uni_en_SOURCES = $(uni_SOURCES) en/uni.rc
-uni_en_CLEAN = $(PATH_BIN)/en/uni.pdr
+uni_INST = bin/en/
+uni_SOURCES = $(uni_main_SOURCES) en/uni.rc
 
 # german source
 DLLS += uni_de
 uni_de_EXTENDS = uni
 uni_de_NAME = uni
 uni_de_INST = bin/de/
-uni_de_SOURCES = $(uni_SOURCES) de/uni.rc
+uni_de_SOURCES = $(uni_main_SOURCES) de/uni.rc
 uni_de_CLEAN = $(PATH_BIN)/de/uni.pdr
 
 uni_CFLAGS = -Zomf
@@ -114,7 +110,7 @@ $(PATH_BIN)/en/uni.hlp: en/uni.ipf ./uni.h ./H/hmacros.h config.kmk
 	-@mkdir $(PATH_BIN)
 	-@mkdir $(PATH_BIN)/en
 	$(TOOLKIT)\bin\ipfc.exe uni_en.i $(PATH_BIN)/en/uni.hlp /COUNTRY=001 /CODEPAGE=850
-	rm uni.i
+	rm uni_en.i
 	rm uni_en.ipf
 
 # compile german help file
@@ -146,6 +142,6 @@ $(PATH_ROOT)/dist/$(PACKAGE_NAME): \
 	$(QUIET)$(RM) -f $@
 	-ea2.cmd -e DEFAULT_PORT=UNI $(PATH_BIN)/en/uni.pdr
 	-ea2.cmd -e DEFAULT_PORT=UNI $(PATH_BIN)/de/uni.pdr
-	zip -9 -r $@ $(PATH_BIN)/* -x $(PATH_BIN)/uni.pdr
+	zip -9 -r $@ $(PATH_BIN)/*
 
 
