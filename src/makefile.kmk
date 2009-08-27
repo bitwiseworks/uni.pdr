@@ -137,11 +137,11 @@ $(PATH_BIN)/de/readme.txt: Config.kmk de/readme.txt
 
 # final: zip all files!
 $(PATH_ROOT)/dist/$(PACKAGE_NAME): \
-		$(PATH_BIN)/uni.pdr
+		$(PATH_BIN)/en/uni.pdr
 	$(QUIET)$(MKDIR) -p $(PATH_ROOT)/dist                              
 	$(QUIET)$(RM) -f $@
 	-ea2.cmd -e DEFAULT_PORT=UNI $(PATH_BIN)/en/uni.pdr
 	-ea2.cmd -e DEFAULT_PORT=UNI $(PATH_BIN)/de/uni.pdr
-	zip -9 -r $@ $(PATH_BIN)/*
+	$(QUIET)$(REDIRECT) -C $(PATH_BIN) -- zip -9 -r $@ *
 
 
