@@ -1,7 +1,7 @@
 #ifndef OS2_INCLUDED
    #include <os2.h>
 #endif
-DLGINCLUDE 1 "U:\Develop\unipdr\src\de\UNI.h"
+DLGINCLUDE 1 "U:\Develop\unipdr\src\UNI.h"
 
 DLGTEMPLATE IDD_UNI LOADONCALL MOVEABLE DISCARDABLE
 BEGIN
