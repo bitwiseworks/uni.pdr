@@ -40,7 +40,7 @@ uni_de_SOURCES = $(uni_main_SOURCES) de/uni.rc
 uni_de_CLEAN = $(PATH_BIN)/de/uni.pdr
 
 uni_CFLAGS = -Zomf
-uni_CFLAGS.release = -s -O3 -march=pentium -mcpu=pentium4
+uni_CFLAGS.release = -s -O1 -march=pentium -mtune=pentium4
 uni_CFLAGS.debug = -g -O0 -DDEBUG
 uni_LDFLAGS = -Zomf -Zno-fork -Zmap -Zbin-files
 uni_LDFLAGS.release = -s
@@ -137,11 +137,11 @@ $(PATH_BIN)/de/readme.txt: Config.kmk de/readme.txt
 
 # final: zip all files!
 $(PATH_ROOT)/dist/$(PACKAGE_NAME): \
-		$(PATH_BIN)/en/uni.pdr
+		$(PATH_BIN)/uni.pdr
 	$(QUIET)$(MKDIR) -p $(PATH_ROOT)/dist                              
 	$(QUIET)$(RM) -f $@
 	-ea2.cmd -e DEFAULT_PORT=UNI $(PATH_BIN)/en/uni.pdr
 	-ea2.cmd -e DEFAULT_PORT=UNI $(PATH_BIN)/de/uni.pdr
-	$(QUIET)$(REDIRECT) -C $(PATH_BIN) -- zip -9 -r $@ *
+	zip -9 -r $@ $(PATH_BIN)/*
 
 

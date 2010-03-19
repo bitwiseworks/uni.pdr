@@ -183,20 +183,21 @@ typedef struct _LPRDATA
    CHAR     szSaveLprSetting[PORT_ENTRY_LEN+1];
    ULONG    lfModified;
 } LPRDATA, *PLPRDATA;
-#define ID_IP                       201
-#define ID_UNIQUEUE                 202
-#define ID_BINARY                   203
-/* #define ID_SPOOL_PATH            204 */
-#define DT_UNIQUEUE                 204
-#define DT_IP                       205
-#define GB_UNICFG                   206
-#define DT_WORKGROUP                207
-#define ID_WORKGROUP                208
-#define DT_USER                     209
-#define ID_USER                     210
-#define DT_PASSWORD                 211
-#define ID_PASSWORD                 212
-#define GB_COPIES                   213
-#define ID_COPIES                   214
-#define DT_COPIES                   215
-#define DT_COPIES2                  216
+#define ID_PROGRAM                  201
+#define DT_PROGRAM                  202
+#define ID_PARAMETERS               203
+#define DT_PARAMETERS               204
+#define GB_UNICFG                   205
+#define DT_UNIQUEUE                 206
+#define ID_UNIQUEUE                 207
+#define ID_BINARY                   208
+#define GB_COPIES                   209
+#define DT_COPIES                   210
+#define ID_COPIES                   211
+#define DT_COPIES2                  212
+
+/* #define ID_SPOOL_PATH               204 */
+/* #define DT_USER                     209 */
+/* #define ID_USER                     210 */
+/* #define DT_PASSWORD                 211 */
+/* #define ID_PASSWORD                 212 */

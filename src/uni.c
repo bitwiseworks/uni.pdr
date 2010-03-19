@@ -178,7 +178,7 @@ MRESULT EXPENTRY CommDlg( HWND hDlg, USHORT msg, MPARAM mp1, MPARAM mp2 )
 	switch (msg)
 	{
 		case WM_INITDLG:
-			WinSendDlgItemMsg(hDlg,ID_BINARY,BM_SETCHECK,MPFROM2SHORT(1,0),NULL);
+//			WinSendDlgItemMsg(hDlg,ID_BINARY,BM_SETCHECK,MPFROM2SHORT(1,0),NULL);
 			pLprData = (PLPRDATA)mp2;
 			WinSetWindowULong (hDlg, QWL_USER, (ULONG)pLprData);
 			if (PrfQueryProfileString (HINI_SYSTEMPROFILE,
@@ -214,34 +214,11 @@ MRESULT EXPENTRY CommDlg( HWND hDlg, USHORT msg, MPARAM mp1, MPARAM mp2 )
 					switch(i)
 					{
 						case 0:
-							WinSetDlgItemText(hDlg,ID_IP,token);
+							WinSetDlgItemText(hDlg,ID_PROGRAM,token);
 						case 1:
 							if (token[ strlen(token) - 1 ] == ';')
 								token[ strlen(token)-1 ] = '\0';
-							WinSetDlgItemText(hDlg,ID_UNIQUEUE,token);
-							break;
-						case 2:
-							if (token[ strlen(token) - 1 ] == ';')
-								token[ strlen(token)-1 ] = '\0';
-							WinSetDlgItemText(hDlg,ID_WORKGROUP,token);
-							break;
-						case 3:
-							if (token[ strlen(token) - 1 ] == ';')
-								token[ strlen(token)-1 ] = '\0';
-							WinSetDlgItemText(hDlg,ID_USER,token);
-							break;
-						case 4:
-							if (token[ strlen(token) - 1 ] == ';')
-								token[ strlen(token)-1 ] = '\0';
-							WinSetDlgItemText(hDlg,ID_COPIES,token);
-							break;
-
-						case 5:
-							if (token[ strlen(token) - 1 ] == ';')
-								token[ strlen(token)-1 ] = '\0';
-							strcpy(pwBuffer,token);
-							decryptPassword(pwBuffer,token);
-							WinSetDlgItemText(hDlg,ID_PASSWORD,token);
+							WinSetDlgItemText(hDlg,ID_PARAMETERS,token);
 							break;
 					}
 					i++;
@@ -256,20 +233,8 @@ MRESULT EXPENTRY CommDlg( HWND hDlg, USHORT msg, MPARAM mp1, MPARAM mp2 )
 			{
 				case DID_OK:
 					sprintf(szDesc,"\\");
-					/* Servername | IP */
-					WinQueryDlgItemText (hDlg, ID_IP, sizeof(szTemp), szTemp );
-					sprintf(pLprData->szSaveLprSetting,"%s",szTemp);
-					strncpy(szShareName, szTemp, STR_LEN_PORTDESC - 1);
-					/* Printername | Queue */
-					WinQueryDlgItemText (hDlg, ID_UNIQUEUE, sizeof(szTemp), szTemp );
-					strcat(pLprData->szSaveLprSetting,"#");
-					strcat(pLprData->szSaveLprSetting,szTemp);
-					if (strlen(szTemp) > 0) {
-						strncat(szShareName, "\\", STR_LEN_PORTDESC - 1);
-						strncat(szShareName, szTemp, STR_LEN_PORTDESC - 1);
-					}
-					/* Workgroup */
-					WinQueryDlgItemText (hDlg, ID_WORKGROUP, sizeof(szTemp), szTemp );
+					/* Program */
+					WinQueryDlgItemText (hDlg, ID_PROGRAM, sizeof(szTemp), szTemp );
 					strcat(pLprData->szSaveLprSetting,"#");
 					strcat(pLprData->szSaveLprSetting,szTemp);
 					if (strlen(szTemp) > 0) {
@@ -278,21 +243,35 @@ MRESULT EXPENTRY CommDlg( HWND hDlg, USHORT msg, MPARAM mp1, MPARAM mp2 )
 					}
 					strncat(szDesc, "\\", STR_LEN_PORTDESC - 1);
 					strncat(szDesc, szShareName, STR_LEN_PORTDESC - 1);
+					
+					/* Parameters */
+					WinQueryDlgItemText (hDlg, ID_PARAMETERS, sizeof(szTemp), szTemp );
+					sprintf(pLprData->szSaveLprSetting,"%s",szTemp);
+					strncpy(szShareName, szTemp, STR_LEN_PORTDESC - 1);
+					
+					/* Printername | Queue */
+/*					WinQueryDlgItemText (hDlg, ID_UNIQUEUE, sizeof(szTemp), szTemp );
+					strcat(pLprData->szSaveLprSetting,"#");
+					strcat(pLprData->szSaveLprSetting,szTemp);
+					if (strlen(szTemp) > 0) {
+						strncat(szShareName, "\\", STR_LEN_PORTDESC - 1);
+						strncat(szShareName, szTemp, STR_LEN_PORTDESC - 1);
+					} */
 					/* Username */
-					WinQueryDlgItemText (hDlg, ID_USER, sizeof(szTemp), szTemp );
+/*					WinQueryDlgItemText (hDlg, ID_USER, sizeof(szTemp), szTemp );
 					strcat(pLprData->szSaveLprSetting,"#");
-					strcat(pLprData->szSaveLprSetting,szTemp);
+					strcat(pLprData->szSaveLprSetting,szTemp); */
 					/* Number of copies */
-					WinQueryDlgItemText (hDlg, ID_COPIES, sizeof(szTemp), szTemp );
+/*					WinQueryDlgItemText (hDlg, ID_COPIES, sizeof(szTemp), szTemp );
 					strcat(pLprData->szSaveLprSetting,"#");
-					strcat(pLprData->szSaveLprSetting,szTemp);
+					strcat(pLprData->szSaveLprSetting,szTemp); */
 					/* Password - must be the last item! */
-					WinQueryDlgItemText (hDlg, ID_PASSWORD, sizeof(szTemp), szTemp );
+/*					WinQueryDlgItemText (hDlg, ID_PASSWORD, sizeof(szTemp), szTemp );
 					strcat(pLprData->szSaveLprSetting,"#");
 					strcpy(pwBuffer,szTemp);
 					encryptPassword(pwBuffer,szTemp);
 					strcat(pLprData->szSaveLprSetting,szTemp);
-
+ */
 					if (!PrfWriteProfileString (HINI_SYSTEMPROFILE,
 												pLprData->pszAppName,
 												KEY_INITIALIZATION,
@@ -974,9 +953,9 @@ ULONG  APIENTRY SplPdClose( HFILE  hFile )
 	HFILE       control;
 	UCHAR       binfile[256];
 	UCHAR       arg[256];
-	UCHAR       j_url[256] ;
+	UCHAR       j_parms[256] ;
 	UCHAR       j_id[3];
-	UCHAR       j_user[256];
+	UCHAR       parameters[256];
 	UCHAR       j_title[256];
 	UCHAR       j_copies[3];
 	UCHAR       j_options[8];
@@ -1026,18 +1005,18 @@ ULONG  APIENTRY SplPdClose( HFILE  hFile )
 			szTemp[i] = '\0';
 			switch(j)
 			{
-				case 0:strcpy(ip_add,&szTemp[pos]);
+				case 0:strcpy(binfile,&szTemp[pos]);
 						break;
-				case 1:strcpy(queue_name,&szTemp[pos]);
+				case 1:strcpy(parameters,&szTemp[pos]);
 						break;
-				case 2:strcpy(workgroup,&szTemp[pos]);
+/*				case 2:strcpy(workgroup,&szTemp[pos]);
 						break;
 				case 3:strcpy(username,&szTemp[pos]);
 						break;
 				case 4:strcpy(j_copies,&szTemp[pos]);
 						break;
 				case 5:strcpy(password_enc,&szTemp[pos]);
-						break;
+						break; */
 			}
 			pos = i+1;
 			j++;
@@ -1056,13 +1035,8 @@ ULONG  APIENTRY SplPdClose( HFILE  hFile )
 // This is the soon to be obsolete description of smbspool
 // Usage: smbspool [DEVICE_URI] job-id user title copies options [file]
 
-	sprintf(binfile, "smbspool.exe\0");
-	sprintf(j_url,"smb://%s:%s@%s/%s/%s",username,password_dec,workgroup,ip_add,queue_name);
-	sprintf(j_id,"999");
-	sprintf(j_user,username);
-	sprintf(j_title,"from %s",getenv("HOSTNAME"));
-	sprintf(j_options,"opt");
-	rc = spawnlp(P_WAIT,binfile,binfile,j_url,j_id,j_user,j_title,j_copies,j_options,filename,NULL);
+	sprintf(j_parms,parameters);
+	rc = spawnlp(P_WAIT,binfile,binfile,j_parms,filename,NULL);
 
 	while (rc != 0)
 	{
@@ -1074,7 +1048,7 @@ ULONG  APIENTRY SplPdClose( HFILE  hFile )
 							0L, MB_RETRYCANCEL | MB_WARNING | MB_MOVEABLE);
 		if (resp != MBID_CANCEL )
 		{
-			rc = spawnlp(P_WAIT,binfile,binfile,j_url,j_id,j_user,j_title,j_copies,j_options,filename,NULL);
+			rc = spawnlp(P_WAIT,binfile,binfile,j_parms,filename,NULL);
 		}
 		else rc = 0;
 	};
