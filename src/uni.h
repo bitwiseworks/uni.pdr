@@ -155,7 +155,7 @@
    /*
    ** port defaults
    */
-#define DEF_INITIALIZATION        "localhost#PRINT#WORKGROUP#guest#1;"
+#define DEF_INITIALIZATION        "ePDF.EXE#-PS:'file';"
 #define DEF_TERMINATION           ";"
 #define DEF_PORTDRIVER            "UNI;"
 #define DEF_PORTNAME              "UNI"   /* Must update build script if this is changed! */
@@ -200,5 +200,7 @@ typedef struct _LPRDATA
 #define ID_COPIES                   214
 #define DT_COPIES                   215
 #define DT_COPIES2                  216
-#define DT_PROGRAM                  217
-#define DT_PARAMETERS               218
+#define ID_PROGRAM                  217
+#define DT_PROGRAM                  218
+#define ID_PARAMETERS               219
+#define DT_PARAMETERS               220

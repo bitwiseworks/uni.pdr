@@ -25,6 +25,7 @@ BEGIN
         ENTRYFIELD      "", ID_PROGRAM, 71, 131, 142, 8, ES_MARGIN
         LTEXT           "Parameters:", DT_PARAMETERS, 13, 116, 53, 8, 
                         DT_VCENTER
+        ENTRYFIELD      "", ID_PARAMETERS, 71, 103, 142, 8, ES_MARGIN
         LTEXT           "Printer:", DT_UNIQUEUE, 13, 102, 53, 8, DT_VCENTER | 
                         NOT WS_VISIBLE
         ENTRYFIELD      "", ID_UNIQUEUE, 71, 103, 142, 8, ES_MARGIN | NOT 
