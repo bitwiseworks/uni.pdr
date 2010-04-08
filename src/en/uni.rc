@@ -1,6 +1,10 @@
 #include <os2.h>
 #include "UNI.h"
 
+RCINCLUDE "UNI.dlg"
+RCINCLUDE "description.rc"
+
+
 DEFAULTICON UNI.ICO
 POINTER UNI_ICON  LOADONCALL MOVEABLE DISCARDABLE  UNI.ICO
 
@@ -140,6 +144,3 @@ BEGIN
     PORT_ERR_TITLE          "Port Driver Error"
     PORT_HELP_TITLE         "UNI Port Help"
 END
-
-rcinclude UNI.dlg
-rcinclude description.rc
