@@ -59,6 +59,31 @@ int acrtused=1;                      /* Define variable to say this is a DLL */
 #include    <process.h>
 #include    "UNI.h"
 
+/*  replace one string by another */
+char * stringReplace(char *search, char *replace, char *string) {
+	char *tempString, *searchStart;
+	int len=0;
+	// preuefe ob Such-String vorhanden ist
+	searchStart = strstr(string, search);
+	if(searchStart == NULL) {
+		return string;
+	}
+	// Speicher reservieren
+	tempString = (char*) malloc((strlen(string) + strlen(replace) - strlen(search))* sizeof(char));
+	// temporaere Kopie anlegen
+	strcpy(tempString, string);
+	// ersten Abschnitt in String setzen
+	len = searchStart - string;
+	strncpy(string, tempString, len);
+	// zweiten Abschnitt anhaengen
+	strcat(string, replace);
+	// dritten Abschnitt anhaengen
+	len += strlen(search);
+	strcat(string,  (char *)tempString+len);
+	return string;
+}
+
+
 /* Password encryption/decryption routines from ndpsmb.c */
 
 static unsigned char fromhex (char c)
@@ -1036,8 +1061,11 @@ ULONG  APIENTRY SplPdClose( HFILE  hFile )
 // This is the soon to be obsolete description of smbspool
 // Usage: smbspool [DEVICE_URI] job-id user title copies options [file]
 
+
 	sprintf(j_parms,parameters);
-	rc = spawnlp(P_WAIT,binfile,binfile,j_parms,filename,NULL);
+	stringReplace("%file%",filename,j_parms);
+	
+	rc = spawnlp(P_WAIT,binfile,binfile,j_parms,NULL);
 
 	while (rc != 0)
 	{
@@ -1049,7 +1077,7 @@ ULONG  APIENTRY SplPdClose( HFILE  hFile )
 							0L, MB_RETRYCANCEL | MB_WARNING | MB_MOVEABLE);
 		if (resp != MBID_CANCEL )
 		{
-			rc = spawnlp(P_WAIT,binfile,binfile,j_parms,filename,NULL);
+			rc = spawnlp(P_WAIT,binfile,binfile,j_parms,NULL);
 		}
 		else rc = 0;
 	};
