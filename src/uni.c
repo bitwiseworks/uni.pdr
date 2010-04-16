@@ -60,29 +60,36 @@ int acrtused=1;                      /* Define variable to say this is a DLL */
 #include    "UNI.h"
 
 /*  replace one string by another */
-char * stringReplace(char *search, char *replace, char *string) {
-	char *tempString, *searchStart;
-	int len=0;
-	// preuefe ob Such-String vorhanden ist
-	searchStart = strstr(string, search);
-	if(searchStart == NULL) {
-		return string;
-	}
-	// Speicher reservieren
-	tempString = (char*) malloc((strlen(string) + strlen(replace) - strlen(search))* sizeof(char));
-	// temporaere Kopie anlegen
-	strcpy(tempString, string);
-	// ersten Abschnitt in String setzen
-	len = searchStart - string;
-	strncpy(string, tempString, len);
-	// zweiten Abschnitt anhaengen
-	strcat(string, replace);
-	// dritten Abschnitt anhaengen
-	len += strlen(search);
-	strcat(string,  (char *)tempString+len);
-	return string;
-}
+char * searchReplace(char *search, char *replace, char *string)
+{
+// creat init some variables
+        char * tempString, *searchStart;
+        int len = 0;
 
+// do we find the searched string at all
+        searchStart = strstr(string, search);
+        if (searchStart == NULL)
+        {
+                return string;
+        }
+
+// allocate needed space for the tempstring
+        tempString = malloc((strlen(string) - strlen(search) + strlen(replace)) * sizeof(char));
+
+// copy first part
+        len = searchStart - string;
+        strncpy(tempString, string, len);
+
+// add the replaced string
+        strcat(tempString, replace);
+
+// add the last part
+        len += strlen(search);
+        strcat(tempString, string+len);
+
+// memory leek!!!       free(tempString);
+        return tempString;
+}
 
 /* Password encryption/decryption routines from ndpsmb.c */
 
@@ -1063,7 +1070,7 @@ ULONG  APIENTRY SplPdClose( HFILE  hFile )
 
 
 	sprintf(j_parms,parameters);
-	stringReplace("%file%",filename,j_parms);
+	searchReplace("%file%",filename,j_parms);
 	
 	rc = spawnlp(P_WAIT,binfile,binfile,j_parms,NULL);
 
