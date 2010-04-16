@@ -235,18 +235,19 @@ MRESULT EXPENTRY CommDlg( HWND hDlg, USHORT msg, MPARAM mp1, MPARAM mp2 )
 					sprintf(szDesc,"\\");
 					/* Program */
 					WinQueryDlgItemText (hDlg, ID_PROGRAM, sizeof(szTemp), szTemp );
-					strcat(pLprData->szSaveLprSetting,"#");
 					strcat(pLprData->szSaveLprSetting,szTemp);
-					if (strlen(szTemp) > 0) {
+					strcat(pLprData->szSaveLprSetting,"#");
+
+/*					if (strlen(szTemp) > 0) {
 						strncat(szDesc, "\\", STR_LEN_PORTDESC - 1);
 						strncat(szDesc, szTemp, STR_LEN_PORTDESC - 1);
 					}
 					strncat(szDesc, "\\", STR_LEN_PORTDESC - 1);
-					strncat(szDesc, szShareName, STR_LEN_PORTDESC - 1);
+					strncat(szDesc, szShareName, STR_LEN_PORTDESC - 1); */
 					
 					/* Parameters */
 					WinQueryDlgItemText (hDlg, ID_PARAMETERS, sizeof(szTemp), szTemp );
-					sprintf(pLprData->szSaveLprSetting,"%s",szTemp);
+					strcat(pLprData->szSaveLprSetting,szTemp);
 					strncpy(szShareName, szTemp, STR_LEN_PORTDESC - 1);
 					
 					/* Printername | Queue */
