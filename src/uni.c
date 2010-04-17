@@ -60,35 +60,52 @@ int acrtused=1;                      /* Define variable to say this is a DLL */
 #include    "UNI.h"
 
 /*  replace one string by another */
-char * searchReplace(char *search, char *replace, char *string)
+/*
+int main()
+{
+        char string[100] = "ich bin ein file: %file%";
+        char search[] = "%file%";
+        char replace[] = "datei___datei";
+        char *replaced;
+
+// allocate needed space for the returning string
+        replaced = malloc((strlen(string) - strlen(search) + strlen(replace)) * sizeof(char));
+
+        printf("vorher: %s\n", string);
+        searchReplace(search, replace, string, replaced);
+        printf("nachher: %s\n", replaced);
+
+        free(replaced);
+        return 0;
+}
+*/
+
+BOOL searchReplace(const UCHAR *search, const UCHAR *replace, const UCHAR *string, UCHAR *replaced)
 {
 // creat init some variables
-        char * tempString, *searchStart;
+        UCHAR *searchStart;
         int len = 0;
 
 // do we find the searched string at all
         searchStart = strstr(string, search);
         if (searchStart == NULL)
         {
-                return string;
+                strncpy(replaced, string, strlen(replaced));
+                return FALSE;
         }
-
-// allocate needed space for the tempstring
-        tempString = malloc((strlen(string) - strlen(search) + strlen(replace)) * sizeof(char));
 
 // copy first part
         len = searchStart - string;
-        strncpy(tempString, string, len);
+        strncpy(replaced, string, len);
 
 // add the replaced string
-        strcat(tempString, replace);
+        strcat(replaced, replace);
 
 // add the last part
         len += strlen(search);
-        strcat(tempString, string+len);
+        strcat(replaced, string+len);
 
-// memory leek!!!       free(tempString);
-        return tempString;
+        return TRUE;
 }
 
 /* Password encryption/decryption routines from ndpsmb.c */
@@ -264,23 +281,27 @@ MRESULT EXPENTRY CommDlg( HWND hDlg, USHORT msg, MPARAM mp1, MPARAM mp2 )
 			switch (SHORT1FROMMP(mp1))
 			{
 				case DID_OK:
-					sprintf(szDesc,"\\");
+					sprintf(szDesc," ");
 					/* Program */
 					WinQueryDlgItemText (hDlg, ID_PROGRAM, sizeof(szTemp), szTemp );
 					strcat(pLprData->szSaveLprSetting,szTemp);
 					strcat(pLprData->szSaveLprSetting,"#");
 
-/*					if (strlen(szTemp) > 0) {
-						strncat(szDesc, "\\", STR_LEN_PORTDESC - 1);
+					if (strlen(szTemp) > 0) {
+						strncat(szDesc, " ", STR_LEN_PORTDESC - 1);
 						strncat(szDesc, szTemp, STR_LEN_PORTDESC - 1);
 					}
-					strncat(szDesc, "\\", STR_LEN_PORTDESC - 1);
-					strncat(szDesc, szShareName, STR_LEN_PORTDESC - 1); */
+					strncat(szDesc, " ", STR_LEN_PORTDESC - 1);
+					strncat(szDesc, szShareName, STR_LEN_PORTDESC - 1); 
 					
 					/* Parameters */
 					WinQueryDlgItemText (hDlg, ID_PARAMETERS, sizeof(szTemp), szTemp );
 					strcat(pLprData->szSaveLprSetting,szTemp);
 					strncpy(szShareName, szTemp, STR_LEN_PORTDESC - 1);
+					if (strlen(szTemp) > 0) {
+						strncat(szShareName, " ", STR_LEN_PORTDESC - 1);
+						strncat(szShareName, szTemp, STR_LEN_PORTDESC - 1);
+					} 
 					
 					/* Printername | Queue */
 /*					WinQueryDlgItemText (hDlg, ID_UNIQUEUE, sizeof(szTemp), szTemp );
@@ -987,6 +1008,7 @@ ULONG  APIENTRY SplPdClose( HFILE  hFile )
 	UCHAR       binfile[256];
 	UCHAR       arg[256];
 	UCHAR       j_parms[256] ;
+	UCHAR       *f_parms;
 	UCHAR       j_id[3];
 	UCHAR       parameters[256];
 	UCHAR       j_title[256];
@@ -1069,8 +1091,12 @@ ULONG  APIENTRY SplPdClose( HFILE  hFile )
 // Usage: smbspool [DEVICE_URI] job-id user title copies options [file]
 
 
-	sprintf(j_parms,parameters);
-	searchReplace("%file%",filename,j_parms);
+    f_parms = malloc((strlen(parameters) - strlen("%file%") + strlen(filename)) * sizeof(UCHAR));
+
+    searchReplace("%file%", filename, parameters, f_parms);
+
+	sprintf(j_parms,f_parms);
+    free(f_parms);
 	
 	rc = spawnlp(P_WAIT,binfile,binfile,j_parms,NULL);
 
