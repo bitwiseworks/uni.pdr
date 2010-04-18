@@ -5,35 +5,26 @@ DLGINCLUDE 1 "uni.h"
 
 DLGTEMPLATE IDD_UNI LOADONCALL MOVEABLE DISCARDABLE
 BEGIN
-    DIALOG  "Port Properties - ", IDD_UNI, 19, 122, 237, 71, FS_NOBYTEALIGN | 
+    DIALOG  "Port Properties - ", IDD_UNI, 19, 49, 231, 144, FS_NOBYTEALIGN | 
             WS_VISIBLE | WS_SYNCPAINT, FCF_SYSMENU | FCF_TITLEBAR | 
             FCF_NOBYTEALIGN
             PRESPARAMS PP_FONTNAMESIZE, "9.WarpSans"
     BEGIN
         DEFPUSHBUTTON   "OK", DID_OK, 5, 5, 76, 14
                         PRESPARAMS PP_FONTNAMESIZE, "9.WarpSans Bold"
-        PUSHBUTTON      "Cancel ", DID_CANCEL, 150, 5, 76, 14
+        PUSHBUTTON      "Cancel ", DID_CANCEL, 149, 5, 76, 14
                         PRESPARAMS PP_FONTNAMESIZE, "9.WarpSans Bold"
-        GROUPBOX        "Universal port driver properties", GB_UNICFG, 5, 23, 
-                        220, 42
+        GROUPBOX        "Universal port driver properties", GB_UNICFG, 5, 24, 
+                        220, 114
                         PRESPARAMS PP_FOREGROUNDCOLOR, 0x00000000L
                         PRESPARAMS PP_FONTNAMESIZE, "9.WarpSans Bold"
-        LTEXT           "Program:", DT_PROGRAM, 13, 45, 53, 8, DT_VCENTER
-        ENTRYFIELD      "", ID_PROGRAM, 71, 46, 142, 8, ES_MARGIN
-        LTEXT           "Parameters:", DT_PARAMETERS, 13, 31, 53, 8, 
+        LTEXT           "Program:", DT_PROGRAM, 13, 118, 53, 8, DT_VCENTER
+        ENTRYFIELD      "", ID_PROGRAM, 15, 106, 200, 8, ES_MARGIN
+        LTEXT           "Parameters:", DT_PARAMETERS, 13, 71, 204, 8, 
                         DT_VCENTER
-        ENTRYFIELD      "", ID_PARAMETERS, 71, 32, 142, 8, ES_MARGIN
-        AUTOCHECKBOX    "Send as binary file", ID_BINARY, 115, 63, 75, 8, 
-                        NOT WS_VISIBLE | WS_DISABLED
-        GROUPBOX        "Number of copies", GB_COPIES, 230, 43, 5, 26, NOT 
-                        WS_VISIBLE
-                        PRESPARAMS PP_FOREGROUNDCOLOR, 0x00000000L
-                        PRESPARAMS PP_FONTNAMESIZE, "9.WarpSans Bold"
-        LTEXT           "Spool this job", DT_COPIES, 230, 33, 7, 8, 
-                        DT_VCENTER | NOT WS_VISIBLE
-        LTEXT           "times to the server", DT_COPIES2, 229, 23, 7, 8, 
-                        DT_VCENTER | NOT WS_VISIBLE
-        ENTRYFIELD      "", ID_COPIES, 101, 7, 23, 8, ES_MARGIN | NOT 
-                        WS_VISIBLE
+        ENTRYFIELD      "", ID_PARAMETERS, 15, 59, 200, 8, ES_MARGIN
+        LTEXT           "Working directory:", DT_DIRECTORY, 13, 45, 203, 8
+        ENTRYFIELD      "", ID_DIRECTORY, 15, 33, 200, 8, ES_MARGIN
+        PUSHBUTTON      "Find", PB_FIND, 13, 86, 62, 14, WS_DISABLED
     END
 END

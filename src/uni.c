@@ -60,52 +60,32 @@ int acrtused=1;                      /* Define variable to say this is a DLL */
 #include    "UNI.h"
 
 /*  replace one string by another */
-/*
-int main()
-{
-        char string[100] = "ich bin ein file: %file%";
-        char search[] = "%file%";
-        char replace[] = "datei___datei";
-        char *replaced;
-
-// allocate needed space for the returning string
-        replaced = malloc((strlen(string) - strlen(search) + strlen(replace)) * sizeof(char));
-
-        printf("vorher: %s\n", string);
-        searchReplace(search, replace, string, replaced);
-        printf("nachher: %s\n", replaced);
-
-        free(replaced);
-        return 0;
-}
-*/
-
 BOOL searchReplace(const UCHAR *search, const UCHAR *replace, const UCHAR *string, UCHAR *replaced)
 {
-// creat init some variables
-        UCHAR *searchStart;
-        int len = 0;
+	/* create init some variables */
+	UCHAR *searchStart;
+	int len = 0;
 
-// do we find the searched string at all
-        searchStart = strstr(string, search);
-        if (searchStart == NULL)
-        {
-                strncpy(replaced, string, strlen(replaced));
-                return FALSE;
-        }
+	/* do we find the searched string at all */
+	searchStart = strstr(string, search);
+	if (searchStart == NULL)
+	{
+		strncpy(replaced, string, strlen(replaced));
+		return FALSE;
+	}
 
-// copy first part
-        len = searchStart - string;
-        strncpy(replaced, string, len);
+	/* copy first part */
+	len = searchStart - string;
+	strncpy(replaced, string, len);
 
-// add the replaced string
-        strcat(replaced, replace);
+	/* add the replaced string */
+	strcat(replaced, replace);
 
-// add the last part
-        len += strlen(search);
-        strcat(replaced, string+len);
+	/* add the last part */
+	len += strlen(search);
+	strcat(replaced, string+len);
 
-        return TRUE;
+	return TRUE;
 }
 
 /* Password encryption/decryption routines from ndpsmb.c */
@@ -269,6 +249,11 @@ MRESULT EXPENTRY CommDlg( HWND hDlg, USHORT msg, MPARAM mp1, MPARAM mp2 )
 								token[ strlen(token)-1 ] = '\0';
 							WinSetDlgItemText(hDlg,ID_PARAMETERS,token);
 							break;
+						case 2:
+							if (token[ strlen(token) - 1 ] == ';')
+								token[ strlen(token)-1 ] = '\0';
+							WinSetDlgItemText(hDlg,ID_DIRECTORY,token);
+							break;
 					}
 					i++;
 					token = lprtok(NULL,"#");
@@ -291,23 +276,27 @@ MRESULT EXPENTRY CommDlg( HWND hDlg, USHORT msg, MPARAM mp1, MPARAM mp2 )
 						strncat(szDesc, " ", STR_LEN_PORTDESC - 1);
 						strncat(szDesc, szTemp, STR_LEN_PORTDESC - 1);
 					}
-					strncat(szDesc, " ", STR_LEN_PORTDESC - 1);
-					strncat(szDesc, szShareName, STR_LEN_PORTDESC - 1); 
+					/* strncat(szDesc, " ", STR_LEN_PORTDESC - 1);
+					strncat(szDesc, szShareName, STR_LEN_PORTDESC - 1); */
 					
 					/* Parameters */
 					WinQueryDlgItemText (hDlg, ID_PARAMETERS, sizeof(szTemp), szTemp );
 					strcat(pLprData->szSaveLprSetting,szTemp);
-					strncpy(szShareName, szTemp, STR_LEN_PORTDESC - 1);
-					if (strlen(szTemp) > 0) {
-						strncat(szShareName, " ", STR_LEN_PORTDESC - 1);
-						strncat(szShareName, szTemp, STR_LEN_PORTDESC - 1);
-					} 
-					
-					/* Printername | Queue */
-/*					WinQueryDlgItemText (hDlg, ID_UNIQUEUE, sizeof(szTemp), szTemp );
 					strcat(pLprData->szSaveLprSetting,"#");
-					strcat(pLprData->szSaveLprSetting,szTemp);
+
 					if (strlen(szTemp) > 0) {
+						strncat(szDesc, " ", STR_LEN_PORTDESC - 1);
+						strncat(szDesc, szTemp, STR_LEN_PORTDESC - 1);
+					} 
+					/* strncat(szDesc, " ", STR_LEN_PORTDESC - 1);
+					strncat(szDesc, szShareName, STR_LEN_PORTDESC - 1); */
+					
+					/* Working directory */
+					WinQueryDlgItemText (hDlg, ID_DIRECTORY, sizeof(szTemp), szTemp );
+					strcat(pLprData->szSaveLprSetting,szTemp);
+					/* strcat(pLprData->szSaveLprSetting,"#"); */
+					
+					/* if (strlen(szTemp) > 0) {
 						strncat(szShareName, "\\", STR_LEN_PORTDESC - 1);
 						strncat(szShareName, szTemp, STR_LEN_PORTDESC - 1);
 					} */
@@ -1011,6 +1000,7 @@ ULONG  APIENTRY SplPdClose( HFILE  hFile )
 	UCHAR       *f_parms;
 	UCHAR       j_id[3];
 	UCHAR       parameters[256];
+	UCHAR       workingdir[256] ;
 	UCHAR       j_title[256];
 	UCHAR       j_copies[3];
 	UCHAR       j_options[8];
@@ -1064,9 +1054,9 @@ ULONG  APIENTRY SplPdClose( HFILE  hFile )
 						break;
 				case 1:strcpy(parameters,&szTemp[pos]);
 						break;
-/*				case 2:strcpy(workgroup,&szTemp[pos]);
+				case 2:strcpy(workingdir,&szTemp[pos]);
 						break;
-				case 3:strcpy(username,&szTemp[pos]);
+/*				case 3:strcpy(username,&szTemp[pos]);
 						break;
 				case 4:strcpy(j_copies,&szTemp[pos]);
 						break;
@@ -1102,7 +1092,7 @@ ULONG  APIENTRY SplPdClose( HFILE  hFile )
 
 	while (rc != 0)
 	{
-		sprintf(errorstr,"Error during spooling to smb://%s:****@%s/%s/%s",username,workgroup,ip_add,queue_name);
+		sprintf(errorstr,"Error during spooling %s to %s %s",queue_name,binfile,j_parms);
 		resp = WinMessageBox (HWND_DESKTOP,
 							HWND_DESKTOP,
 							errorstr,

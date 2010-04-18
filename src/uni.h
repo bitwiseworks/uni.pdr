@@ -155,7 +155,7 @@
    /*
    ** port defaults
    */
-#define DEF_INITIALIZATION        "ePDF.EXE#-PS:'file';"
+#define DEF_INITIALIZATION        ".exe#%file%#;"
 #define DEF_TERMINATION           ";"
 #define DEF_PORTDRIVER            "UNI;"
 #define DEF_PORTNAME              "UNI"   /* Must update build script if this is changed! */
@@ -183,24 +183,12 @@ typedef struct _LPRDATA
    CHAR     szSaveLprSetting[PORT_ENTRY_LEN+1];
    ULONG    lfModified;
 } LPRDATA, *PLPRDATA;
-#define ID_IP                       201
-#define ID_UNIQUEUE                 202
-#define ID_BINARY                   203
-/* #define ID_SPOOL_PATH            204 */
-#define DT_UNIQUEUE                 204
-#define DT_IP                       205
+
 #define GB_UNICFG                   206
-#define DT_WORKGROUP                207
-#define ID_WORKGROUP                208
-#define DT_USER                     209
-#define ID_USER                     210
-#define DT_PASSWORD                 211
-#define ID_PASSWORD                 212
-#define GB_COPIES                   213
-#define ID_COPIES                   214
-#define DT_COPIES                   215
-#define DT_COPIES2                  216
-#define ID_PROGRAM                  217
-#define DT_PROGRAM                  218
-#define ID_PARAMETERS               219
-#define DT_PARAMETERS               220
+#define ID_PROGRAM                  210
+#define DT_PROGRAM                  211
+#define ID_PARAMETERS               212
+#define DT_PARAMETERS               213
+#define DT_DIRECTORY                214
+#define ID_DIRECTORY                215
+#define PB_FIND                     216
