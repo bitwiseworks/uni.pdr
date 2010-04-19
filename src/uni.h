@@ -1,3 +1,51 @@
+#define  INCL_DOS
+#define  INCL_GPI
+#undef   INCL_GPI
+#define  INCL_DEV
+#define  INCL_DOSMEMMGR                /* Include standard OS/2 support      */
+#define  INCL_DOSMODULEMGR             /* For DosLoadModule                  */
+#define  INCL_DOSPROCESS
+#define  INCL_GPILCIDS
+#define  INCL_WINCOMMON                /* Include Window Management support  */
+#define  INCL_WINDOWMGR
+#define  INCL_WINSWITCHLIST
+#define  INCL_WINPROGRAMLIST
+#define  INCL_WINMENUS
+#define  INCL_WINWINDOWMGR
+#define  INCL_WINMESSAGEMGR
+#define  INCL_WINDIALOGS
+#define  INCL_WINSTATICS
+#define  INCL_WINLISTBOXES
+#define  INCL_WINMENUS
+#define  INCL_WINSYS
+#define  INCL_WINFRAMEMGR
+#define  INCL_INCLWINACCELERATORS
+#define  INCL_WINPOINTERS
+#define  INCL_WINERRORS
+#define  INCL_WINSHELLDATA
+
+#define  INCL_WINTYPES
+#define  INCL_WINACCELERATORS
+#define  INCL_WINBUTTONS
+#define  INCL_WINENTRYFIELDS
+#define  INCL_WINRECTANGLES
+#define  INCL_WINTIMER
+#define  INCL_WINSCROLLBARS
+#define  INCL_WINHEAP
+#define  INCL_SHLERRORS
+#define  INCL_WININPUT
+#define  INCL_WINHELP
+#define  INCL_WINSTDSPIN
+
+#define  INCL_SPL
+#define  INCL_SPLP
+#define  INCL_SPLERRORS
+#define  INCL_SHLERRORS
+#define  INCL_DOSERRORS
+#define  INCL_WINHOOKS
+
+#include <os2.h>
+
 #define PATH_UNI_PDR                 "?:\\OS2\\DLL\\UNI.PDR"
 #define UNI_DLL                      "UNI.PDR"
 
@@ -174,7 +222,7 @@
 #define ID_NUMBER_OF_DESC_LINES   8000
 #define ID_FIRST_DESC_LINES       8001
 
-typedef struct _LPRDATA
+typedef struct _UNIDATA
 {
    HAB      hAB;
    HMODULE  hModule;
@@ -182,7 +230,13 @@ typedef struct _LPRDATA
    PSZ      pszAppName;
    CHAR     szSaveLprSetting[PORT_ENTRY_LEN+1];
    ULONG    lfModified;
-} LPRDATA, *PLPRDATA;
+} UNIDATA, *PUNIDATA;
+
+typedef struct _PORTNAMES
+{
+	PSZ pszPortName;         /* -> name of port(ie "LPT1)                    */
+	PSZ pszPortDesc;         /* -> description of port(ie "Parallel Port 1") */
+} PORTNAMES, *PPORTNAMES;
 
 #define GB_UNICFG                   206
 #define ID_PROGRAM                  210

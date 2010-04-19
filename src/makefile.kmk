@@ -26,7 +26,8 @@ TOOL_OPENWATCOM_RCFLAGS += -i=$(TOOLKIT)/h
 uni_main_SOURCES = \
 	uni.def \
 	uni.c \
-	utils.c
+	utils.c \
+	splpd.c
 
 # english source
 uni_INST = bin/en/

@@ -24,5 +24,6 @@
 BOOL searchReplace(const char *search, const char *replace, const char *org_string, char *replaced_string);
 void decryptPassword(const char *pszCrypt, char *pszPlain);
 void encryptPassword(const char *pszPlain, char *pszCrypt);
+char * lprtok (char *string,char *control);
 
 #endif // __UTILS__H
