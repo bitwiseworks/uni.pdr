@@ -1,0 +1,9 @@
+
+#ifndef __Version__H
+#define __Version__H
+
+#define UNIPDR_VERSION	_VERSION_
+#define UNIPDR_BUILD	_BUILD_
+#define UNIPDR_INSTALL	_WPIVERSION_
+
+#endif // __Version__H

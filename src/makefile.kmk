@@ -54,11 +54,11 @@ uni_DLLSUFF = .pdr
 uni_CLEAN = description.rc $(PATH_BIN)/uni.pdr
 
 #build other files en (e.g. help)
-OTHERS = /en/uni.ipf $(PATH_BIN)/en/uni.hlp $(PATH_BIN)/en/readme.txt
+OTHERS = $(PATH_BIN)/en/uni.hlp $(PATH_BIN)/en/readme.txt
 OTHER_CLEAN = $(PATH_BIN)/en/uni.hlp $(PATH_BIN)/en/readme.txt
 
 #build other files de (e.g. help)
-OTHERS += /de/uni.ipf $(PATH_BIN)/de/uni.hlp $(PATH_BIN)/de/readme.txt
+OTHERS += $(PATH_BIN)/de/uni.hlp $(PATH_BIN)/de/readme.txt
 OTHER_CLEAN += $(PATH_BIN)/de/uni.hlp $(PATH_BIN)/de/readme.txt
 
 
@@ -92,35 +92,25 @@ description.rc: config.kmk
 	@cp description.rc_ description.rc
 	@BldLevelInf0.cmd $(VERSION) $(BUILD)
 
-# substitute macros in ipf file en
-/en/uni.ipf: Config.kmk ./en/uni.ipf
-	$(QUIET)$(SED) "s;_VERSION_;$(VERSION);g" ./en/uni.ipf \
-		| $(SED) "s;_BUILD_;$(BUILD);g" \
-		> uni_en.ipf
-
-# substitute macros in ipf file de
-/de/uni.ipf: Config.kmk ./de/uni.ipf
-	$(QUIET)$(SED) "s;_VERSION_;$(VERSION);g" ./de/uni.ipf \
-		| $(SED) "s;_BUILD_;$(BUILD);g" \
-		> uni_de.ipf
 
 # compile english help file
-$(PATH_BIN)/en/uni.hlp: en/uni.ipf ./uni.h config.kmk
-	-gcc -E -I./h -I./en -x c uni_en.ipf > uni_en.i
+$(PATH_BIN)/en/uni.hlp: ./en/uni.ipf version.h Config.kmk
+	-@mkdir $(PATH_OBJ)
+	-@mkdir $(PATH_OBJ)\en
+	@ppwizard.cmd ./en/uni.ipf /Pack:N /output:$(PATH_OBJ)/en/uni.ipf /other /WarningsRc:0
 	-@mkdir $(PATH_BIN)
-	-@mkdir $(PATH_BIN)/en
-	$(TOOLKIT)\bin\ipfc.exe uni_en.i $(PATH_BIN)/en/uni.hlp /COUNTRY=001 /CODEPAGE=850
-	rm uni_en.i
-	rm uni_en.ipf
+	-@mkdir $(PATH_BIN)\en
+	$(TOOLKIT)\bin\ipfc.exe $(PATH_OBJ)/en/uni.ipf $(PATH_BIN)/en/uni.hlp /COUNTRY=001 /CODEPAGE=850
 
 # compile german help file
-$(PATH_BIN)/de/uni.hlp: de/uni.ipf ./uni.h config.kmk
-	-gcc -E -I./h -I./de -x c uni_de.ipf > uni_de.i
+$(PATH_BIN)/de/uni.hlp: ./de/uni.ipf version.h Config.kmk
+	-@mkdir $(PATH_OBJ)
+	-@mkdir $(PATH_OBJ)\de
+	@ppwizard.cmd ./de/uni.ipf /Pack:N /output:$(PATH_OBJ)/de/uni.ipf /other /WarningsRc:0
 	-@mkdir $(PATH_BIN)
-	-@mkdir $(PATH_BIN)/de
-	$(TOOLKIT)\bin\ipfc.exe uni_de.i $(PATH_BIN)/de/uni.hlp /COUNTRY=001 /CODEPAGE=850
-	rm uni_de.i
-	rm uni_de.ipf
+	-@mkdir $(PATH_BIN)\de
+	$(TOOLKIT)\bin\ipfc.exe $(PATH_OBJ)/de/uni.ipf $(PATH_BIN)/de/uni.hlp /COUNTRY=001 /CODEPAGE=850
+
 
 # substitute macros in docs en
 $(PATH_BIN)/en/readme.txt: Config.kmk en/readme.txt
@@ -134,6 +124,12 @@ $(PATH_BIN)/de/readme.txt: Config.kmk de/readme.txt
 		| $(SED) "s;_BUILD_;$(BUILD);g" \
 		> $(PATH_BIN)/de/readme.txt
 
+# substitute macros in version.h
+version.h: Config.kmk version.h_
+	$(SED) "s;_VERSION_;$(VERSION);g" version.h_ \
+		| $(SED) "s;_WPIVERSION_;$(subst .,\\\,$(VERSION));g" \
+		| $(SED) "s;_BUILD_;$(BUILD);g" \
+		> version.h
 
 # final: zip all files!
 $(PATH_ROOT)/dist/$(PACKAGE_NAME): \

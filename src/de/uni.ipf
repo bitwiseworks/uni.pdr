@@ -1,4 +1,4 @@
-#include "uni.h"
+#include "version.h"
 
 :userdoc.
 
@@ -6,7 +6,7 @@
 .nameit symbol=respdr text='Properties'
 .nameit symbol=unipdr text='Universal Port Driver fÅr &os.'
 .nameit symbol=usage text='Usage'
-.nameit symbol=build text='&unipdr. version _VERSION_ build _BUILD_'
+.nameit symbol=build text='&unipdr. version <$UNIPDR_VERSION> build <$UNIPDR_BUILD>'
 
 :title.&unipdr.
 
