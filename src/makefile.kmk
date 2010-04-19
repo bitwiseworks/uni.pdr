@@ -105,7 +105,7 @@ description.rc: config.kmk
 		> uni_de.ipf
 
 # compile english help file
-$(PATH_BIN)/en/uni.hlp: en/uni.ipf ./uni.h ./H/hmacros.h config.kmk
+$(PATH_BIN)/en/uni.hlp: en/uni.ipf ./uni.h config.kmk
 	-gcc -E -I./h -I./en -x c uni_en.ipf > uni_en.i
 	-@mkdir $(PATH_BIN)
 	-@mkdir $(PATH_BIN)/en
@@ -114,7 +114,7 @@ $(PATH_BIN)/en/uni.hlp: en/uni.ipf ./uni.h ./H/hmacros.h config.kmk
 	rm uni_en.ipf
 
 # compile german help file
-$(PATH_BIN)/de/uni.hlp: de/uni.ipf ./uni.h ./H/hmacros.h config.kmk
+$(PATH_BIN)/de/uni.hlp: de/uni.ipf ./uni.h config.kmk
 	-gcc -E -I./h -I./de -x c uni_de.ipf > uni_de.i
 	-@mkdir $(PATH_BIN)
 	-@mkdir $(PATH_BIN)/de

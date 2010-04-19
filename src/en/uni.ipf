@@ -1,5 +1,4 @@
-#include <hmacros.h>
-#include "uni.h"
+#include "version.h"
 
 :userdoc.
 
