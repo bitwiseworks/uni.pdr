@@ -791,17 +791,15 @@ ULONG APIENTRY SplPdOpen( PSZ     pszPortName,
 	ULONG  ulBytesRead    = 0;      /* Number of bytes read by DosRead */
 	ULONG  ulWrote       = 0;      /* Number of bytes written by DosWrite */
 	ULONG  ulLocal       = 0;      /* File pointer position after DosSetFilePtr */
-	CHAR   szTemp[ 256];
-	UCHAR  tmp[256];
+	char    szTemp[ 256];
+	char    tmp[256];
 	ULONG  pcbWritten ;
 	USHORT  i;
 	HFILE   control;
-	UCHAR  filename[256];
+	char  filename[256];
 	DATETIME dt;
-	UCHAR  spool_dir[256];
+	char  spool_dir[256];
 	PEAOP2 pEABuf = NULL;
-/*   UCHAR       pszPSHeader[] = "%!PS-Adobe-3.0\n";
-	ULONG           cbHeader;  */
 
 
 	if (!phFile || !pDeviceFlags )
@@ -900,28 +898,28 @@ ULONG  APIENTRY SplPdClose( HFILE  hFile )
 	RESULTCODES rc_child;
 	ULONG       nbr_lu;
 	ULONG       ulAction;
-	UCHAR       szTemp[256];
+	char       szTemp[256];
 	HFILE       control;
-	UCHAR       binfile[256];
-	UCHAR       arg[256];
-	UCHAR       j_parms[256] ;
+	char       binfile[256];
+	char       arg[256];
+	char       j_parms[256] ;
 	char         *f_parms;
-	UCHAR       j_id[3];
-	UCHAR       parameters[256];
-	UCHAR       workingdir[256] ;
-	UCHAR       j_title[256];
-	UCHAR       j_copies[3];
-	UCHAR       j_options[8];
-	UCHAR       filename[256];
-	UCHAR       ip_add[256];
-	UCHAR       queue_name[256];
-	UCHAR       workgroup[256];
-	UCHAR       username[256];
-	UCHAR       password_enc[256];
-	UCHAR       password_dec[256];
-	UCHAR       errorstr[256];
+	char       j_id[3];
+	char       parameters[256];
+	char       workingdir[256] ;
+	char       j_title[256];
+	char       j_copies[3];
+	char       j_options[8];
+	char       filename[256];
+	char       ip_add[256];
+	char       queue_name[256];
+	char       workgroup[256];
+	char       username[256];
+	char       password_enc[256];
+	char       password_dec[256];
+	char       errorstr[256];
 	USHORT      pos;
-	UCHAR       spool_dir[256];
+	char       spool_dir[256];
 	ULONG       ulBootDrive;
 
 	rc = PrfQueryProfileString (HINI_SYSTEMPROFILE,
