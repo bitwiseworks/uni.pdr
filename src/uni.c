@@ -987,13 +987,14 @@ ULONG  APIENTRY SplPdClose( HFILE  hFile )
 // Usage: smbspool [DEVICE_URI] job-id user title copies options [file]
 
 
-    f_parms = malloc((strlen(parameters) - strlen("%file%") + strlen(filename)) * sizeof(char));
+	f_parms = malloc((strlen(parameters) - strlen("%file%") + strlen(filename)) * sizeof(char));
 
-    searchReplace("%file%", filename, parameters, f_parms);
+	searchReplace("%file%", filename, parameters, f_parms);
 
 	sprintf(j_parms,f_parms);
-    free(f_parms);
-	
+	free(f_parms);
+
+	chdir(workingdir);
 	rc = spawnlp(P_WAIT,binfile,binfile,j_parms,NULL);
 
 	while (rc != 0)
