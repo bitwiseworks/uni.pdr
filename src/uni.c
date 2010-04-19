@@ -57,100 +57,8 @@ int acrtused=1;                      /* Define variable to say this is a DLL */
 #include    <stdio.h>
 #include    <stdlib.h>
 #include    <process.h>
-#include    "UNI.h"
-
-/*  replace one string by another */
-BOOL searchReplace(const UCHAR *search, const UCHAR *replace, const UCHAR *string, UCHAR *replaced)
-{
-	/* create init some variables */
-	UCHAR *searchStart;
-	int len = 0;
-
-	/* do we find the searched string at all */
-	searchStart = strstr(string, search);
-	if (searchStart == NULL)
-	{
-		strncpy(replaced, string, strlen(replaced));
-		return FALSE;
-	}
-
-	/* copy first part */
-	len = searchStart - string;
-	strncpy(replaced, string, len);
-
-	/* add the replaced string */
-	strcat(replaced, replace);
-
-	/* add the last part */
-	len += strlen(search);
-	strcat(replaced, string+len);
-
-	return TRUE;
-}
-
-/* Password encryption/decryption routines from ndpsmb.c */
-
-static unsigned char fromhex (char c)
-{
-	if ('0' <= c && c <= '9')
-	{
-		return c - '0';
-	}
-	
-	if ('A' <= c && c <= 'F')
-	{
-		return c - 'A' + 0xA;
-	}
-	
-	if ('a' <= c && c <= 'f')
-	{
-		return c - 'a' + 0xA;
-	}
-	
-	return 0;
-}
-
-static char tohex (unsigned char b)
-{
-	b &= 0xF;
-	
-	if (b <= 9)
-	{
-		return b + '0';
-	}
-	
-	return 'A' + (b - 0xA);
-}
-
-static void decryptPassword (const char *pszCrypt, char *pszPlain)
-{
-	/* A simple "decryption", character from the hex value. */
-	const char *s = pszCrypt;
-	char *d = pszPlain;
-	
-	while (*s)
-	{
-		*d++ = (char)((fromhex (*s++) << 4) + fromhex (*s++));
-	}
-	
-	*d++ = 0;
-}
-
-static void encryptPassword (const char *pszPlain, char *pszCrypt)
-{
-	/* A simple "encryption" encode each character as hex value. */
-	const char *s = pszPlain;
-	char *d = pszCrypt;
-	
-	while (*s)
-	{
-		*d++ = tohex ((*s) >> 4);
-		*d++ = tohex (*s);
-		s++;
-	}
-	
-	*d++ = 0;
-}
+#include    "uni.h"
+#include    "utils.h"
 
 //
 // If port driver is not defined in INI file yet
@@ -997,7 +905,7 @@ ULONG  APIENTRY SplPdClose( HFILE  hFile )
 	UCHAR       binfile[256];
 	UCHAR       arg[256];
 	UCHAR       j_parms[256] ;
-	UCHAR       *f_parms;
+	char         *f_parms;
 	UCHAR       j_id[3];
 	UCHAR       parameters[256];
 	UCHAR       workingdir[256] ;
@@ -1081,7 +989,7 @@ ULONG  APIENTRY SplPdClose( HFILE  hFile )
 // Usage: smbspool [DEVICE_URI] job-id user title copies options [file]
 
 
-    f_parms = malloc((strlen(parameters) - strlen("%file%") + strlen(filename)) * sizeof(UCHAR));
+    f_parms = malloc((strlen(parameters) - strlen("%file%") + strlen(filename)) * sizeof(char));
 
     searchReplace("%file%", filename, parameters, f_parms);
 
