@@ -567,16 +567,19 @@ ULONG  APIENTRY SplPdClose( HFILE  hFile )
 
 //	decryptPassword(password_enc,password_dec);
 
-        j_parms = malloc((strlen(parameters) - strlen("%file%") + strlen(filename)) * sizeof(char));
+	j_parms = malloc((strlen(parameters) - strlen("%file%") + strlen(filename)) * sizeof(char));
 
-        searchReplace("%file%", filename, parameters, j_parms);
+	searchReplace("%file%", filename, parameters, j_parms);
 
-        chdir(workingdir);	
+	if (strlen(workingdir) > 0)
+	{
+		chdir(workingdir);	
+	};
 	rc = spawnlp(P_WAIT,binfile,binfile,j_parms,NULL);
 
 	while (rc != 0)
 	{
-		sprintf(errorstr,"Error during spooling %s to %s %s",queue_name,binfile,j_parms);
+		sprintf(errorstr,"Error during spooling to %s %s",binfile,j_parms);
 		resp = WinMessageBox (HWND_DESKTOP,
 							HWND_DESKTOP,
 							errorstr,
@@ -589,7 +592,7 @@ ULONG  APIENTRY SplPdClose( HFILE  hFile )
 		else rc = 0;
 	};
 
-        free(j_parms);
+	free(j_parms);
 	strcpy(filename,&szTemp[pos]);
 	DosDelete(filename);
 
