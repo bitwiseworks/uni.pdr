@@ -28,11 +28,11 @@ if filename <> '' then do
 end
 
 select
+  when opt = '-?'  then rc = DisplayHelp()
   when opt = '-e'  then rc = AddEA(filename, easpec)
   when opt = '-d'  then rc = RemoveEA(filename, easpec)
   when opt = '-v'  then rc = DisplayEA(filename, easpec,'false')
   when opt = '-vn' then rc = DisplayEA(filename, easpec,'true' )
-  when opt = '-?'  then rc = DisplayHelp()
   when opt = ''    then rc = DisplayHelp()
   otherwise  rc = DisplayPrinterEA(filename)
 end

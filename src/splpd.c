@@ -29,7 +29,7 @@ APIRET APIENTRY SplPdEnumPort ( HAB hab,
 	HMODULE hModule;
 	ULONG   ulBootDrive;
 	ULONG   rcLoadMod;
-	CHAR     szPathName[260];
+	CHAR    szPathName[260];
 
 	if (!pulReturned ||
 		!pulTotal ||
@@ -66,16 +66,16 @@ APIRET APIENTRY SplPdEnumPort ( HAB hab,
 		return(ERROR_MORE_DATA);
 	}
 
-		/*
-		** check number of ports info we can fit in supplied buffer
-		*/
+	/*
+	** check number of ports info we can fit in supplied buffer
+	*/
 	*pulTotal    = MAX_PORTS;
 	*pcbRequired = CalcBufLength (hab, hModule);
 	*pulReturned = NumPortsCanFit (hab, hModule, cbBuf);
 
-		/*
-		** return error if we can not fit one port.
-		*/
+	/*
+	** return error if we can not fit one port.
+	*/
 	if (!(*pulReturned))
 	{
 		if (!rcLoadMod)
@@ -371,20 +371,20 @@ ULONG APIENTRY SplPdOpen( PSZ     pszPortName,
 							PULONG  pDeviceFlags,
 							PVOID   pPrtOpenStruct)
 {
-	APIRET rc;
-	ULONG  ulAction       = 0;      /* Action taken by DosOpen */
-	ULONG  ulBytesRead    = 0;      /* Number of bytes read by DosRead */
-	ULONG  ulWrote       = 0;      /* Number of bytes written by DosWrite */
-	ULONG  ulLocal       = 0;      /* File pointer position after DosSetFilePtr */
-	char    szTemp[ 256];
-	char    tmp[256];
-	ULONG  pcbWritten ;
-	USHORT  i;
-	HFILE   control;
-	char  filename[256];
+	APIRET   rc;
+	ULONG    ulAction    = 0;     /* Action taken by DosOpen */
+	ULONG    ulBytesRead = 0;     /* Number of bytes read by DosRead */
+	ULONG    ulWrote     = 0;     /* Number of bytes written by DosWrite */
+	ULONG    ulLocal     = 0;     /* File pointer position after DosSetFilePtr */
+	char     szTemp[ 256];
+	char     tmp[256];
+	ULONG    pcbWritten ;
+	USHORT   i;
+	HFILE    control;
+	char     filename[256];
 	DATETIME dt;
-	char  spool_dir[256];
-	PEAOP2 pEABuf = NULL;
+	char     spool_dir[256];
+	PEAOP2   pEABuf = NULL;
 
 
 	if (!phFile || !pDeviceFlags )
@@ -403,16 +403,16 @@ ULONG APIENTRY SplPdOpen( PSZ     pszPortName,
 	DosCreateDir( tmp,pEABuf );
 	sprintf(filename,"%s\\UNI\\%02d_%02d_%02d_%02d_%s",spool_dir,dt.hours,dt.minutes,dt.seconds,dt.hundredths,pszPortName);
 	rc = DosOpen(filename,
-				phFile,                       /* File handle */
+				phFile,                        /* File handle */
 				&ulAction,                     /* Action taken */
-				100L,                           /* File primary allocation */
-				FILE_ARCHIVED | FILE_NORMAL,    /* File attribute */
+				100L,                          /* File primary allocation */
+				FILE_ARCHIVED | FILE_NORMAL,   /* File attribute */
 				OPEN_ACTION_CREATE_IF_NEW |
-				OPEN_ACTION_OPEN_IF_EXISTS,     /* Open function type */
+				OPEN_ACTION_OPEN_IF_EXISTS,    /* Open function type */
 				OPEN_FLAGS_NOINHERIT |
 				OPEN_SHARE_DENYNONE  |
 				OPEN_ACCESS_READWRITE,         /* Open mode of the file */
-				0L);                         /* No extended attribute */
+				0L);                           /* No extended attribute */
 /*  DosWrite(*phFile,pszPSHeader,strlen(pszPSHeader),&cbHeader);  */
 	sprintf(szTemp,"PM_%s",pszPortName);
 	if (PrfQueryProfileString (HINI_SYSTEMPROFILE,
@@ -483,27 +483,27 @@ ULONG  APIENTRY SplPdClose( HFILE  hFile )
 	RESULTCODES rc_child;
 	ULONG       nbr_lu;
 	ULONG       ulAction;
-	char       szTemp[256];
-	HFILE      control;
-	char       binfile[256];
-	char       arg[256];
-	char       *j_parms;
-	char       j_id[3];
-	char       parameters[256];
-	char       workingdir[256] ;
-	char       j_title[256];
-	char       j_copies[3];
-	char       j_options[8];
-	char       filename[256];
-	char       ip_add[256];
-	char       queue_name[256];
-	char       workgroup[256];
-	char       username[256];
-	char       password_enc[256];
-	char       password_dec[256];
-	char       errorstr[256];
+	char        szTemp[256];
+	HFILE       control;
+	char        binfile[256];
+	char        arg[256];
+	char        *j_parms;
+	char        j_id[3];
+	char        parameters[256];
+	char        workingdir[256] ;
+	char        j_title[256];
+	char        j_copies[3];
+	char        j_options[8];
+	char        filename[256];
+	char        ip_add[256];
+	char        queue_name[256];
+	char        workgroup[256];
+	char        username[256];
+	char        password_enc[256];
+	char        password_dec[256];
+	char        errorstr[256];
 	USHORT      pos;
-	char       spool_dir[256];
+	char        spool_dir[256];
 	ULONG       ulBootDrive;
 
 	rc = PrfQueryProfileString (HINI_SYSTEMPROFILE,
