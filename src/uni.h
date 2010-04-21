@@ -43,6 +43,7 @@
 #define  INCL_SHLERRORS
 #define  INCL_DOSERRORS
 #define  INCL_WINHOOKS
+#define  INCL_WINSTDDLGS           /* CUA controls and dialogs */
 
 #include <os2.h>
 
@@ -238,11 +239,12 @@ typedef struct _PORTNAMES
 	PSZ pszPortDesc;         /* -> description of port(ie "Parallel Port 1") */
 } PORTNAMES, *PPORTNAMES;
 
-#define GB_UNICFG                   206
-#define ID_PROGRAM                  210
-#define DT_PROGRAM                  211
-#define ID_PARAMETERS               212
-#define DT_PARAMETERS               213
-#define DT_DIRECTORY                214
-#define ID_DIRECTORY                215
-#define PB_FIND                     216
+#define GB_UNICFG                   201
+#define ID_PROGRAM                  202
+#define DT_PROGRAM                  203
+#define ID_PARAMETERS               204
+#define DT_PARAMETERS               205
+#define DT_DIRECTORY                206
+#define ID_DIRECTORY                207
+#define DID_FIND                    208
+#define DID_SETUPWIZARD             209

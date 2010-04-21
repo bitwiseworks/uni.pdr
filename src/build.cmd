@@ -1,21 +1,25 @@
 @echo off
+echo Cleaning.
 @del uni.o
 @del uni.pdr
 @del .\de\uni.res
-echo Done cleaning.
-gcc -o utils.o utils.c -c>>build.log
+echo Done.
+echo Compiling.
+gcc -o utils.o utils.c -c>build.log
 gcc -o splpd.o splpd.c -c>>build.log
-gcc -o uni.o uni.c -c>build.log
-
-echo Done compiling.
+gcc -o uni.o uni.c -c>>build.log
+echo Done.
+echo Compiling resources.
 cd de
-RC -r uni.RC uni.RES 
+RC -r uni.RC uni.RES >>build.log
 cd ..
-echo Done compiling resource.
+echo Done.
+echo Linking.
 gcc -Zdll -Zbin-files -Zomf -o uni.pdr utils.o splpd.o uni.o uni.def .\de\uni.res >>build.log
-echo Done linking.
+echo Done.
+echo Attaching EAS.
 ea2 -e DEFAULT_PORT=UNI uni.pdr >>build.log
-echo Done attaching EA.
+echo Done.
 rem d:
 rem cd \OS2\DLL
 rem lxunlock uni.pdr

@@ -25,6 +25,7 @@ BEGIN
         ENTRYFIELD      "", ID_PARAMETERS, 15, 59, 200, 8, ES_MARGIN
         LTEXT           "Working directory:", DT_DIRECTORY, 13, 45, 203, 8
         ENTRYFIELD      "", ID_DIRECTORY, 15, 33, 200, 8, ES_MARGIN
-        PUSHBUTTON      "Find", PB_FIND, 13, 86, 62, 14, WS_DISABLED
+        PUSHBUTTON      "Find", DID_FIND, 13, 86, 62, 14
+        PUSHBUTTON      "Setup Wizard", DID_SETUPWIZARD, 155, 86, 62, 14
     END
 END
