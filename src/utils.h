@@ -21,7 +21,7 @@
 #ifndef __UTILS_H__
 #define __UTILS_H__
 
-BOOL searchReplace(const char *search, const char *replace, const char *org_string, char *replaced_string);
+BOOL searchReplace(const char *search, const char *replace, const char *string, char *replaced, int size);
 void decryptPassword(const char *pszCrypt, char *pszPlain);
 void encryptPassword(const char *pszPlain, char *pszCrypt);
 char * lprtok (char *string,char *control);

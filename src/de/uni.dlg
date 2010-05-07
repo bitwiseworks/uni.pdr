@@ -12,20 +12,20 @@ BEGIN
     BEGIN
         DEFPUSHBUTTON   "OK", DID_OK, 5, 5, 76, 14
                         PRESPARAMS PP_FONTNAMESIZE, "9.WarpSans Bold"
-        PUSHBUTTON      "Cancel ", DID_CANCEL, 149, 5, 76, 14
+        PUSHBUTTON      "Cancel", DID_CANCEL, 149, 5, 76, 14
                         PRESPARAMS PP_FONTNAMESIZE, "9.WarpSans Bold"
         GROUPBOX        "Universal port driver properties", GB_UNICFG, 5, 24, 
                         220, 114
                         PRESPARAMS PP_FOREGROUNDCOLOR, 0x00000000L
                         PRESPARAMS PP_FONTNAMESIZE, "9.WarpSans Bold"
-        LTEXT           "Program:", DT_PROGRAM, 13, 118, 53, 8, DT_VCENTER
+        LTEXT           "Path amd file:", DT_PROGRAM, 13, 118, 53, 8, DT_VCENTER
         ENTRYFIELD      "", ID_PROGRAM, 15, 106, 200, 8, ES_MARGIN
         LTEXT           "Parameters:", DT_PARAMETERS, 13, 71, 204, 8, 
                         DT_VCENTER
         ENTRYFIELD      "", ID_PARAMETERS, 15, 59, 200, 8, ES_MARGIN
         LTEXT           "Working directory:", DT_DIRECTORY, 13, 45, 203, 8
         ENTRYFIELD      "", ID_DIRECTORY, 15, 33, 200, 8, ES_MARGIN
-        PUSHBUTTON      "Find", DID_FIND, 13, 86, 62, 14
+        PUSHBUTTON      "~Find...", DID_FIND, 13, 86, 62, 14
         PUSHBUTTON      "Setup Wizard", DID_SETUPWIZARD, 155, 86, 62, 14
     END
 END

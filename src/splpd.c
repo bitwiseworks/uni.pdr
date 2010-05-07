@@ -488,6 +488,7 @@ ULONG  APIENTRY SplPdClose( HFILE  hFile )
 	char        binfile[256];
 	char        arg[256];
 	char        *j_parms;
+	int         allocSize = 0;
 	char        j_id[3];
 	char        parameters[256];
 	char        workingdir[256] ;
@@ -505,6 +506,15 @@ ULONG  APIENTRY SplPdClose( HFILE  hFile )
 	USHORT      pos;
 	char        spool_dir[256];
 	ULONG       ulBootDrive;
+	char        *p1 = NULL;
+	char        *p2 = NULL;
+	char        *p3 = NULL;
+	char        *p4 = NULL;
+	char        *p5 = NULL;
+	char        *p6 = NULL;
+	char        *p7 = NULL;
+	char        *p8 = NULL;
+	char        *p9 = NULL;
 
 	rc = PrfQueryProfileString (HINI_SYSTEMPROFILE,
 								"PM_SPOOLER",
@@ -567,19 +577,36 @@ ULONG  APIENTRY SplPdClose( HFILE  hFile )
 
 //	decryptPassword(password_enc,password_dec);
 
-	j_parms = malloc((strlen(parameters) - strlen("%file%") + strlen(filename)) * sizeof(char));
+//  allocate needed space for the returning string +1 (for string terminator)
+	allocSize = strlen(parameters) - strlen("%file%") + strlen(filename);
 
-	searchReplace("%file%", filename, parameters, j_parms);
+	j_parms = malloc((allocSize +1) * sizeof(char));
+
+//  searchReplace(search, replace, string, replaced, allocSize);
+	searchReplace("%file%", filename, parameters, j_parms, allocSize);
+
+//  split into single paramters 
+	p1 = strtok (j_parms, " ");
+	p2 = strtok (NULL, " ");
+	p3 = strtok (NULL, " ");
+	p4 = strtok (NULL, " ");
+	p5 = strtok (NULL, " ");
+	p6 = strtok (NULL, " ");
+	p7 = strtok (NULL, " ");
+	p8 = strtok (NULL, " ");
+	p9 = strtok (NULL, " ");
 
 	if (strlen(workingdir) > 0)
 	{
 		chdir(workingdir);	
 	};
-	rc = spawnlp(P_WAIT,binfile,binfile,j_parms,NULL);
+
+	rc = spawnlp(P_WAIT,binfile,binfile,p1,p2,p3,p4,p5,p6,p7,p8,p9,NULL);
 
 	while (rc != 0)
 	{
-		sprintf(errorstr,"Error during spooling to %s %s",binfile,j_parms);
+		sprintf(errorstr,"Error during spooling to %s %s %s %s %s %s %s %s %s %s ",binfile,p1,p2,p3,p4,p5,p6,p7,p8,p9,NULL);
+
 		resp = WinMessageBox (HWND_DESKTOP,
 							HWND_DESKTOP,
 							errorstr,
@@ -587,12 +614,13 @@ ULONG  APIENTRY SplPdClose( HFILE  hFile )
 							0L, MB_RETRYCANCEL | MB_WARNING | MB_MOVEABLE);
 		if (resp != MBID_CANCEL )
 		{
-			rc = spawnlp(P_WAIT,binfile,binfile,j_parms,NULL);
+			rc = spawnlp(P_WAIT,binfile,binfile,p1,p2,p3,p4,p5,p6,p7,p8,p9,NULL);
 		}
 		else rc = 0;
 	};
 
 	free(j_parms);
+	
 	strcpy(filename,&szTemp[pos]);
 	DosDelete(filename);
 

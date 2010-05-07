@@ -7,32 +7,51 @@
 #include    "utils.h"
 
 /*  replace one string by another */
-BOOL searchReplace(const char *search, const char *replace, const char *string, char *replaced)
+BOOL searchReplace(const char *search, const char *replace, const char *string, char *replaced, int size)
 {
-	/* create init some variables */
-	char *searchStart;
-	int len = 0;
+// create/init some variables
+        char *searchStart;
+        char *p;
+        int len = 0;
 
-	/* do we find the searched string at all */
-	searchStart = strstr(string, search);
-	if (searchStart == NULL)
-	{
-		strncpy(replaced, string, strlen(replaced));
-		return FALSE;
+// some sanity check
+        if (replaced == NULL || replace == NULL)
+        {
+                return FALSE;
+        }
+
+// do we find the searched string at all
+        searchStart = strstr(string, search);
+        if (searchStart == NULL)
+        {
+                strncpy(replaced, string, size);
+                p = replaced+size;
+                *p = '\0';
+                return FALSE;
+        }
+
+// copy first part
+        len = searchStart - string;
+        strncpy(replaced, string, len);
+        p = replaced+len;
+        *p = '\0';
+
+// add the replaced string
+        strcat(replaced, replace);
+
+// add the last part
+        len += strlen(search);
+        strcat(replaced, string+len);
+
+        return TRUE;
+}
+
+/* convert a string to uppercase */
+void uppercase( char *sPtr )
+{
+	while( *sPtr != '\0' ) {
+		*sPtr = toupper( ( unsigned char ) *sPtr );
 	}
-
-	/* copy first part */
-	len = searchStart - string;
-	strncpy(replaced, string, len);
-
-	/* add the replaced string */
-	strcat(replaced, replace);
-
-	/* add the last part */
-	len += strlen(search);
-	strcat(replaced, string+len);
-
-	return TRUE;
 }
 
 /* Password encryption/decryption routines from ndpsmb.c */
