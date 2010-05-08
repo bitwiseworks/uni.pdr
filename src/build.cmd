@@ -19,7 +19,7 @@ echo Linking.
 gcc -Zdll -Zbin-files -Zomf -o uni.pdr utils.o splpd.o uni.o uni.def .\de\uni.res >>build.log
 echo Done.
 echo Attaching EAS.
-ea2 -e DEFAULT_PORT=UNI uni.pdr >>build.log
+call ea2 -e DEFAULT_PORT=UNI uni.pdr >>build.log
 echo Done.
 d:
 cd \OS2\DLL

@@ -18,7 +18,7 @@ BEGIN
                         220, 114
                         PRESPARAMS PP_FOREGROUNDCOLOR, 0x00000000L
                         PRESPARAMS PP_FONTNAMESIZE, "9.WarpSans Bold"
-        LTEXT           "Path amd file:", DT_PROGRAM, 13, 118, 53, 8, DT_VCENTER
+        LTEXT           "Path and file:", DT_PROGRAM, 13, 118, 53, 8, DT_VCENTER
         ENTRYFIELD      "", ID_PROGRAM, 15, 106, 200, 8, ES_MARGIN
         LTEXT           "Parameters:", DT_PARAMETERS, 13, 71, 204, 8, 
                         DT_VCENTER

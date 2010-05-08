@@ -506,15 +506,7 @@ ULONG  APIENTRY SplPdClose( HFILE  hFile )
 	USHORT      pos;
 	char        spool_dir[256];
 	ULONG       ulBootDrive;
-	char        *p1 = NULL;
-	char        *p2 = NULL;
-	char        *p3 = NULL;
-	char        *p4 = NULL;
-	char        *p5 = NULL;
-	char        *p6 = NULL;
-	char        *p7 = NULL;
-	char        *p8 = NULL;
-	char        *p9 = NULL;
+	char        *p_arg[10];
 
 	rc = PrfQueryProfileString (HINI_SYSTEMPROFILE,
 								"PM_SPOOLER",
@@ -586,26 +578,26 @@ ULONG  APIENTRY SplPdClose( HFILE  hFile )
 	searchReplace("%file%", filename, parameters, j_parms, allocSize);
 
 //  split into single paramters 
-	p1 = strtok (j_parms, " ");
-	p2 = strtok (NULL, " ");
-	p3 = strtok (NULL, " ");
-	p4 = strtok (NULL, " ");
-	p5 = strtok (NULL, " ");
-	p6 = strtok (NULL, " ");
-	p7 = strtok (NULL, " ");
-	p8 = strtok (NULL, " ");
-	p9 = strtok (NULL, " ");
+	p_arg[0] = binfile;
+	for (i=1; i < 10; i++) {
+		if ( i == 1) {
+			p_arg[i] = strtok(j_parms, " ");
+		} else {
+			p_arg[i] = strtok(NULL, " ");
+		}
+	};
+	p_arg[10] = NULL;
 
 	if (strlen(workingdir) > 0)
 	{
 		chdir(workingdir);	
 	};
 
-	rc = spawnlp(P_WAIT,binfile,binfile,p1,p2,p3,p4,p5,p6,p7,p8,p9,NULL);
+	rc = spawnvp(P_WAIT,p_arg[0],p_arg);
 
 	while (rc != 0)
 	{
-		sprintf(errorstr,"Error during spooling to %s %s %s %s %s %s %s %s %s %s ",binfile,p1,p2,p3,p4,p5,p6,p7,p8,p9,NULL);
+		sprintf(errorstr,"Error during spooling to %s %s ",binfile,j_parms,NULL);
 
 		resp = WinMessageBox (HWND_DESKTOP,
 							HWND_DESKTOP,
@@ -614,7 +606,7 @@ ULONG  APIENTRY SplPdClose( HFILE  hFile )
 							0L, MB_RETRYCANCEL | MB_WARNING | MB_MOVEABLE);
 		if (resp != MBID_CANCEL )
 		{
-			rc = spawnlp(P_WAIT,binfile,binfile,p1,p2,p3,p4,p5,p6,p7,p8,p9,NULL);
+			rc = spawnvp(P_WAIT,p_arg[0],p_arg);
 		}
 		else rc = 0;
 	};
@@ -638,4 +630,3 @@ ULONG APIENTRY SplPdWrite( HFILE    hFile,
 	rc = DosSleep(0);
 	return rc;
 }
-

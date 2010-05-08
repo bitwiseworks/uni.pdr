@@ -15,14 +15,18 @@ ________
 _______________
 
 The eCS (OS/2) Universal Port Driver (UNI.PDR) redirects the datastream 
-from a printer port to a program. It has been tested to work with ePDF 
+from a printer port to a program. It has been tested to work with 
+
+  - ePDF.exe
+  - smbspool.exe
+  
 successfully, but should work with any program being capable to accept a 
 file as an argument on the commandline.
 
 uni.pdr is (like smb.pdr and cups.pdr) based upon Serge Starcks lpr32.pdr.
 Unlike the above 2 pdrs, which have the program to service hardcoded into
-the driver, both program and parameters may be configured individually in
-uni.pdr.
+the driver, uni.pdr allows program, parameters and working directory to be 
+configured individually.
 
 When configuring the parameter field, make sure to have the %file% token
 on the commandline as a placeholder where the pdr will put the real filename
@@ -46,3 +50,12 @@ ____________________
  v1.0 alpha1:
    - changelog created
    - got it working
+   
+ v1.0 alpha2:
+   - find button added
+   - working directory added
+   
+ v1.0 alpha3:
+   - parameters are split into separate parameters internally
+     (as required by smbspool.exe and most likely other programs, too)
+   - fixed token replacement logic (diver)
