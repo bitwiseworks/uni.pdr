@@ -43,7 +43,7 @@
 #define  INCL_SHLERRORS
 #define  INCL_DOSERRORS
 #define  INCL_WINHOOKS
-#define  INCL_WINSTDDLGS           /* CUA controls and dialogs */
+#define  INCL_WINSTDDLGS	/* CUA Controls and dialogs */
 
 #include <os2.h>
 
@@ -248,3 +248,4 @@ typedef struct _PORTNAMES
 #define ID_DIRECTORY                207
 #define DID_FIND                    208
 #define DID_SETUPWIZARD             209
+#define ID_ADDPS                    210

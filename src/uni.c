@@ -35,6 +35,7 @@ MRESULT EXPENTRY CommDlg( HWND hDlg, USHORT msg, MPARAM mp1, MPARAM mp2 )
 	CHAR        szDrive[ _MAX_PATH];
 	CHAR        szDir[ _MAX_PATH];
 	PSZ         pszButtonCode;
+	PUCHAR      ON = "1";
 
 	switch (msg)
 	{
@@ -45,6 +46,7 @@ MRESULT EXPENTRY CommDlg( HWND hDlg, USHORT msg, MPARAM mp1, MPARAM mp2 )
 			WinSendDlgItemMsg(hDlg,ID_DIRECTORY, EM_SETTEXTLIMIT, MPFROMSHORT(128),NULL);
 
 			pUniData = (PUNIDATA)mp2;
+
 			WinSetWindowULong (hDlg, QWL_USER, (ULONG)pUniData);
 			if (PrfQueryProfileString (HINI_SYSTEMPROFILE,
 										pUniData->pszAppName,
@@ -81,14 +83,25 @@ MRESULT EXPENTRY CommDlg( HWND hDlg, USHORT msg, MPARAM mp1, MPARAM mp2 )
 						case 0:
 							WinSetDlgItemText(hDlg,ID_PROGRAM,token);
 						case 1:
-							if (token[ strlen(token) - 1 ] == ';')
+							if (token[ strlen(token)-1 ] == ';')
 								token[ strlen(token)-1 ] = '\0';
 							WinSetDlgItemText(hDlg,ID_PARAMETERS,token);
 							break;
 						case 2:
-							if (token[ strlen(token) - 1 ] == ';')
+							if (token[ strlen(token)-1 ] == ';')
 								token[ strlen(token)-1 ] = '\0';
 							WinSetDlgItemText(hDlg,ID_DIRECTORY,token);
+							break;
+						case 3:
+							if (token[ strlen(token)-1 ] == ';')
+								token[ strlen(token)-1 ] = '\0';
+								
+							if (strncmp(token, ON ,1) == 0) {
+								WinSendDlgItemMsg(hDlg,ID_ADDPS,BM_SETCHECK,MPFROMSHORT(1),NULL);
+							}
+							else {
+								WinSendDlgItemMsg(hDlg,ID_ADDPS,BM_SETCHECK,MPFROMSHORT(0),NULL);
+							}
 							break;
 					}
 					i++;
@@ -130,12 +143,20 @@ MRESULT EXPENTRY CommDlg( HWND hDlg, USHORT msg, MPARAM mp1, MPARAM mp2 )
 					/* Working directory */
 					WinQueryDlgItemText (hDlg, ID_DIRECTORY, sizeof(szTemp), szTemp );
 					strcat(pUniData->szSaveLprSetting,szTemp);
-					/* strcat(pUniData->szSaveLprSetting,"#"); */
+					strcat(pUniData->szSaveLprSetting,"#");
 					
 					/* if (strlen(szTemp) > 0) {
 						strncat(szShareName, "\\", STR_LEN_PORTDESC - 1);
 						strncat(szShareName, szTemp, STR_LEN_PORTDESC - 1);
 					} */
+					
+					/* Add PS header */
+					if ((int) WinSendDlgItemMsg(hDlg,ID_ADDPS,BM_QUERYCHECK,NULL,NULL) == 1)
+						strcat(pUniData->szSaveLprSetting,"1");
+					else strcat(pUniData->szSaveLprSetting,"0");
+					
+					/* strcat(pUniData->szSaveLprSetting,"#"); */
+
 					/* Username */
 /*					WinQueryDlgItemText (hDlg, ID_USER, sizeof(szTemp), szTemp );
 					strcat(pUniData->szSaveLprSetting,"#");
@@ -242,69 +263,3 @@ ULONG OpenUniPortDlg ( HAB hab,
 
 	return UniData.lfModified;
 }
-
-/*
-static ULONG _launchFileDlg( HWND hwnd, HWND hwndBubbleHelp)
-
-{
-         BOOL           ulResult = MBID_ERROR;
-         BOOL           fResult;
-         FILEDLG        fd;
-
-         CHAR           szMessage[ _MAX_PATH];
-         PSZ            pszButtonCode;
-
-// stop bubble help
-WtkDeactivateBubbleHelp( hwndBubbleHelp);
-
-do
-   {
-   // setup data
-   memset( &fd, 0, sizeof( fd));
-   fd.cbSize     = sizeof( fd);
-   fd.fl         = FDS_CENTER | FDS_HELPBUTTON | FDS_OPEN_DIALOG;
-   fd.pszTitle   = "System File test dialog";
-   strcpy( fd.szFullFile, "C:\\*");
-
-   // launch dialog
-   fResult = WinFileDlg( HWND_DESKTOP, hwnd, &fd);
-
-   if (!fResult)
-      sprintf( szMessage, "error launching WinFileDlg\n");
-   else if (fd.lReturn == DID_OK)
-      sprintf( szMessage, "file is: %s\n", fd.szFullFile);
-   else
-      sprintf( szMessage, "error occurred!\n");
-
-   switch (fd.lReturn)
-      {
-      case DID_OK:     pszButtonCode = "(DID_OK)";     break;
-      case DID_CANCEL: pszButtonCode = "(DID_CANCEL)"; break;
-      case DID_ERROR:  pszButtonCode = "(DID_ERROR)";  break;
-      default:         pszButtonCode = "";             break;
-      }
-
-   sprintf( &szMessage[ strlen( szMessage)],
-            "\015\015"
-            "return code is: %u %s\015"
-            "WinFileDlg error source code is: %u\015",
-            fd.lReturn, pszButtonCode, fd.lSRC);
-
-   WinMessageBox( HWND_DESKTOP, hwnd, szMessage, "File Dialog Result", 
-                  IDDLG_MSGBOX_RESULTFILEDLG, MB_MOVEABLE | MB_OK | MB_HELP);
-
-   // on error return error code
-   if (!fResult)
-      break;
-
-   // hand over result
-   ulResult = fd.lReturn;
-
-   } while (FALSE);
-
-
-// restart bubble help
-WtkActivateBubbleHelp( hwndBubbleHelp);
-return ulResult;
-}
- */

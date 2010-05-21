@@ -21,6 +21,3 @@ echo Done.
 echo Attaching EAS.
 call ea2 -e DEFAULT_PORT=UNI uni.pdr >>build.log
 echo Done.
-d:
-cd \OS2\DLL
-lxunlock uni.pdr
