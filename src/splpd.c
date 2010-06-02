@@ -380,8 +380,17 @@ ULONG APIENTRY SplPdOpen( PSZ     pszPortName,
 	char     tmp[256];
 	ULONG    pcbWritten ;
 	USHORT   i;
+	USHORT   j;
+	USHORT   pos;
 	HFILE    control;
+	char     pszPSHeader[] = "%!PS-Adobe-3.0\n";
+	ULONG    cbHeader;
 	char     filename[256];
+	char     binfile[256];
+	char     parameters[256];
+	char     workingdir[256];
+	PUCHAR   addpshdr;
+	PUCHAR   ON = "1";
 	DATETIME dt;
 	char     spool_dir[256];
 	PEAOP2   pEABuf = NULL;
@@ -413,7 +422,7 @@ ULONG APIENTRY SplPdOpen( PSZ     pszPortName,
 				OPEN_SHARE_DENYNONE  |
 				OPEN_ACCESS_READWRITE,         /* Open mode of the file */
 				0L);                           /* No extended attribute */
-/*  DosWrite(*phFile,pszPSHeader,strlen(pszPSHeader),&cbHeader);  */
+
 	sprintf(szTemp,"PM_%s",pszPortName);
 	if (PrfQueryProfileString (HINI_SYSTEMPROFILE,
 							szTemp,
@@ -424,21 +433,55 @@ ULONG APIENTRY SplPdOpen( PSZ     pszPortName,
 	{
 		sprintf(tmp   ,"%s\\UNI\\%d.control",spool_dir,*phFile);
 		rc = DosOpen( tmp    ,
-					&control,                         /* File handle */
-					&ulAction,                     /* Action taken */
+					&control,                    /* File handle */
+					&ulAction,                   /* Action taken */
 					strlen(szTemp),              /* File primary allocation */
-					FILE_ARCHIVED | FILE_NORMAL,    /* File attribute */
+					FILE_ARCHIVED | FILE_NORMAL, /* File attribute */
 					OPEN_ACTION_CREATE_IF_NEW |
-					OPEN_ACTION_OPEN_IF_EXISTS,     /* Open function type */
+					OPEN_ACTION_OPEN_IF_EXISTS,  /* Open function type */
 					OPEN_FLAGS_NOINHERIT |
 					OPEN_SHARE_DENYNONE  |
-					OPEN_ACCESS_READWRITE,         /* Open mode of the file */
+					OPEN_ACCESS_READWRITE,       /* Open mode of the file */
 					0L);                         /* No extended attribute */
-	rc = DosWrite( control,szTemp,strlen(szTemp),&pcbWritten);
-	rc = DosWrite( control,"#",1,&pcbWritten);
-	rc = DosWrite( control,filename,strlen(filename),&pcbWritten);
-	rc = DosWrite( control,"@",1,&pcbWritten);
-	rc = DosClose(control);
+					
+		rc = DosWrite( control,szTemp,strlen(szTemp),&pcbWritten);
+		rc = DosWrite( control,"#",1,&pcbWritten);
+		rc = DosWrite( control,filename,strlen(filename),&pcbWritten);
+		rc = DosWrite( control,"@",1,&pcbWritten);
+		rc = DosClose(control);
+
+		i = 0;
+		j = 0;
+		pos = 0;
+		while (szTemp[i] != '@')
+		{
+			if (szTemp[i] == '#')
+			{
+				szTemp[i] = '\0';
+				switch(j)
+				{
+					case 0:strcpy(binfile,&szTemp[pos]);
+						break;
+					case 1:strcpy(parameters,&szTemp[pos]);
+						break;
+					case 2:strcpy(workingdir,&szTemp[pos]);
+						break;
+					case 3:strcpy(addpshdr,&szTemp[pos]);
+						break;
+/*					case 4:strcpy(j_copies,&szTemp[pos]);
+						break;
+					case 5:strcpy(password_enc,&szTemp[pos]);
+						break; */
+				}
+				pos = i+1;
+				j++;
+			}
+			i++;
+		}
+
+		if (strncmp(addpshdr, ON ,1) == 0) {
+			DosWrite(*phFile,pszPSHeader,strlen(pszPSHeader),&cbHeader);
+		}
 	}
 return rc;
 
@@ -492,6 +535,7 @@ ULONG  APIENTRY SplPdClose( HFILE  hFile )
 	char        j_id[3];
 	char        parameters[256];
 	char        workingdir[256] ;
+	char        addpshdr[1] ;
 	char        j_title[256];
 	char        j_copies[3];
 	char        j_options[8];
