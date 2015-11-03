@@ -59,3 +59,8 @@ ____________________
    - parameters are split into separate parameters internally
      (as required by smbspool.exe and most likely other programs, too)
    - fixed token replacement logic (diver)
+   
+ v1.0 alpha4:
+   - rebuild with LIBC066.DLL
+   - enable usage of high memory 
+     (fixes crash with VIRTUALADDRESSLIMIT > 2048)

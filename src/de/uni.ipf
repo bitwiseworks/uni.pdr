@@ -57,9 +57,24 @@ later added
 :h2 res=001.Version 1.0
 :p.
 :ul.
-:li.alpha 1
+:li.Version 1.0 alpha 1
 :ul.
 :li.changelog created
+:li.got it working
+:eul.   
+:li.Version 1.0 alpha2
+:ul.find button added
+:ul.working directory added
+:eul.   
+:li.Version 1.0 alpha3
+:ul.
+:li.parameters are split into separate parameters internally (as required by smbspool.exe and most likely other programs, too)
+:li.fixed token replacement logic (diver)
+:eul.
+:li.Version 1.0 beta1
+:ul.
+:li.rebuild with LIBC066.DLL
+:li.enable usage of high memory (fixes crash with VIRTUALADDRESSLIMIT > 2048)
 :eul.
 :eul.
 .******************************************************

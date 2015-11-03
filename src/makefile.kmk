@@ -39,12 +39,12 @@ uni_de_EXTENDS = uni
 uni_de_NAME = uni
 uni_de_INST = bin/de/
 uni_de_SOURCES = $(uni_main_SOURCES) de/uni.rc
-uni_de_CLEAN = $(PATH_BIN)/de/uni.pdr
+uni_de_CLEAN = $(PATH_STAGE_BIN)/de/uni.pdr
 
 uni_CFLAGS = -Zomf
 uni_CFLAGS.release = -s -O3 -march=pentium -mtune=pentium4
 uni_CFLAGS.debug = -g -O0 -DDEBUG
-uni_LDFLAGS = -Zomf -Zno-fork -Zmap -Zbin-files  
+uni_LDFLAGS = -Zhigh-mem -Zomf -Zno-fork -Zmap -Zbin-files  
 uni_LDFLAGS.release = -s
 uni_LDFLAGS.debug = -g
 
@@ -53,22 +53,22 @@ uni_INCS = ./h
 
 uni_DLLSUFF = .pdr
 
-uni_CLEAN = description.rc $(PATH_BIN)/uni.pdr
+uni_CLEAN = description.rc $(PATH_STAGE_BIN)/uni.pdr
 
 #build other files en (e.g. help)
-OTHERS = $(PATH_BIN)/en/uni.hlp $(PATH_BIN)/en/readme.txt
-OTHER_CLEAN = $(PATH_BIN)/en/uni.hlp $(PATH_BIN)/en/readme.txt
+OTHERS = $(PATH_STAGE_BIN)/en/uni.hlp $(PATH_STAGE_BIN)/en/readme.txt
+OTHER_CLEAN = $(PATH_STAGE_BIN)/en/uni.hlp $(PATH_STAGE_BIN)/en/readme.txt
 
 #build other files de (e.g. help)
-OTHERS += $(PATH_BIN)/de/uni.hlp $(PATH_BIN)/de/readme.txt
-OTHER_CLEAN += $(PATH_BIN)/de/uni.hlp $(PATH_BIN)/de/readme.txt
+OTHERS += $(PATH_STAGE_BIN)/de/uni.hlp $(PATH_STAGE_BIN)/de/readme.txt
+OTHER_CLEAN += $(PATH_STAGE_BIN)/de/uni.hlp $(PATH_STAGE_BIN)/de/readme.txt
 
 
 #install some more files
 INSTALLS = docs
 docs_INST = bin/
 docs_SOURCES = uni.ico
-OTHER_CLEAN += $(PATH_BIN)/uni.ico
+OTHER_CLEAN += $(PATH_STAGE_BIN)/uni.ico
 
 # packaging stuffs
 ifeq ($(BUILD_TYPE),debug)
@@ -96,35 +96,35 @@ description.rc: config.kmk
 
 
 # compile english help file
-$(PATH_BIN)/en/uni.hlp: ./en/uni.ipf version.h Config.kmk
+$(PATH_STAGE_BIN)/en/uni.hlp: ./en/uni.ipf version.h Config.kmk
 	-@mkdir $(PATH_OBJ)
 	-@mkdir $(PATH_OBJ)\en
 	@ppwizard.cmd ./en/uni.ipf /Pack:N /output:$(PATH_OBJ)/en/uni.ipf /other /WarningsRc:0
-	-@mkdir $(PATH_BIN)
-	-@mkdir $(PATH_BIN)\en
-	$(TOOLKIT)\bin\ipfc.exe $(PATH_OBJ)/en/uni.ipf $(PATH_BIN)/en/uni.hlp /COUNTRY=001 /CODEPAGE=850
+	-@mkdir $(PATH_STAGE_BIN)
+	-@mkdir $(PATH_STAGE_BIN)\en
+	$(TOOLKIT)\bin\ipfc.exe $(PATH_OBJ)/en/uni.ipf $(PATH_STAGE_BIN)/en/uni.hlp /COUNTRY=001 /CODEPAGE=850
 
 # compile german help file
-$(PATH_BIN)/de/uni.hlp: ./de/uni.ipf version.h Config.kmk
+$(PATH_STAGE_BIN)/de/uni.hlp: ./de/uni.ipf version.h Config.kmk
 	-@mkdir $(PATH_OBJ)
 	-@mkdir $(PATH_OBJ)\de
 	@ppwizard.cmd ./de/uni.ipf /Pack:N /output:$(PATH_OBJ)/de/uni.ipf /other /WarningsRc:0
-	-@mkdir $(PATH_BIN)
-	-@mkdir $(PATH_BIN)\de
-	$(TOOLKIT)\bin\ipfc.exe $(PATH_OBJ)/de/uni.ipf $(PATH_BIN)/de/uni.hlp /COUNTRY=001 /CODEPAGE=850
+	-@mkdir $(PATH_STAGE_BIN)
+	-@mkdir $(PATH_STAGE_BIN)\de
+	$(TOOLKIT)\bin\ipfc.exe $(PATH_OBJ)/de/uni.ipf $(PATH_STAGE_BIN)/de/uni.hlp /COUNTRY=001 /CODEPAGE=850
 
 
 # substitute macros in docs en
-$(PATH_BIN)/en/readme.txt: Config.kmk en/readme.txt
+$(PATH_STAGE_BIN)/en/readme.txt: Config.kmk en/readme.txt
 	$(QUIET)$(SED) "s;_VERSION_;$(VERSION);g" en/readme.txt \
 		| $(SED) "s;_BUILD_;$(BUILD);g" \
-		> $(PATH_BIN)/en/readme.txt
+		> $(PATH_STAGE_BIN)/en/readme.txt
 
 # substitute macros in docs de
-$(PATH_BIN)/de/readme.txt: Config.kmk de/readme.txt
+$(PATH_STAGE_BIN)/de/readme.txt: Config.kmk de/readme.txt
 	$(QUIET)$(SED) "s;_VERSION_;$(VERSION);g" de/readme.txt \
 		| $(SED) "s;_BUILD_;$(BUILD);g" \
-		> $(PATH_BIN)/de/readme.txt
+		> $(PATH_STAGE_BIN)/de/readme.txt
 
 # substitute macros in version.h
 version.h: Config.kmk version.h_
@@ -135,11 +135,11 @@ version.h: Config.kmk version.h_
 
 # final: zip all files!
 $(PATH_ROOT)/dist/$(PACKAGE_NAME): \
-		$(PATH_BIN)/uni.pdr
+		$(PATH_STAGE_BIN)/uni.pdr
 	$(QUIET)$(MKDIR) -p $(PATH_ROOT)/dist                              
 	$(QUIET)$(RM) -f $@
-	-ea2.cmd -e DEFAULT_PORT=UNI $(PATH_BIN)/en/uni.pdr
-	-ea2.cmd -e DEFAULT_PORT=UNI $(PATH_BIN)/de/uni.pdr
-	zip -9 -r $@ $(PATH_BIN)/*
+	-ea2.cmd -e DEFAULT_PORT=UNI $(PATH_STAGE_BIN)/en/uni.pdr
+	-ea2.cmd -e DEFAULT_PORT=UNI $(PATH_STAGE_BIN)/de/uni.pdr
+	zip -9 -r $@ $(PATH_STAGE_BIN)/*
 
 
