@@ -5,31 +5,31 @@ DLGINCLUDE 1 "uni.h"
 
 DLGTEMPLATE IDD_UNI LOADONCALL MOVEABLE DISCARDABLE
 BEGIN
-    DIALOG  "Port Properties - ", IDD_UNI, 19, 36, 231, 157, FS_NOBYTEALIGN | 
+    DIALOG  "Anschlussigenschaften - ", IDD_UNI, 19, 36, 231, 157, FS_NOBYTEALIGN | 
             WS_VISIBLE | WS_SYNCPAINT, FCF_SYSMENU | FCF_TITLEBAR | 
             FCF_NOBYTEALIGN
             PRESPARAMS PP_FONTNAMESIZE, "9.WarpSans"
     BEGIN
         DEFPUSHBUTTON   "OK", DID_OK, 5, 5, 76, 14
                         PRESPARAMS PP_FONTNAMESIZE, "9.WarpSans Bold"
-        PUSHBUTTON      "Cancel", DID_CANCEL, 149, 5, 76, 14
+        PUSHBUTTON      "Abbruch", DID_CANCEL, 149, 5, 76, 14
                         PRESPARAMS PP_FONTNAMESIZE, "9.WarpSans Bold"
-        GROUPBOX        "Universal port driver properties", GB_UNICFG, 5, 25, 
+        GROUPBOX        "Eigenschaften des universellen Anschlusstreibers", GB_UNICFG, 5, 25, 
                         220, 126
                         PRESPARAMS PP_FOREGROUNDCOLOR, 0x00000000L
                         PRESPARAMS PP_FONTNAMESIZE, "9.WarpSans Bold"
-        LTEXT           "Path and file:", DT_PROGRAM, 13, 131, 53, 8, 
+        LTEXT           "Pfad und Dateiname:", DT_PROGRAM, 13, 131, 53, 8, 
                         DT_VCENTER
         ENTRYFIELD      "", ID_PROGRAM, 15, 119, 200, 8, ES_MARGIN
-        LTEXT           "Parameters:", DT_PARAMETERS, 13, 84, 204, 8, 
+        LTEXT           "Parameter:", DT_PARAMETERS, 13, 84, 204, 8, 
                         DT_VCENTER
         ENTRYFIELD      "", ID_PARAMETERS, 15, 72, 200, 8, ES_MARGIN
-        LTEXT           "Working directory:", DT_DIRECTORY, 13, 58, 203, 8
+        LTEXT           "Arbeitsverzeichnis:", DT_DIRECTORY, 13, 58, 203, 8
         ENTRYFIELD      "", ID_DIRECTORY, 15, 46, 200, 8, ES_MARGIN
-        PUSHBUTTON      "~Find...", DID_FIND, 13, 99, 62, 14
-        PUSHBUTTON      "Setup Wizard", DID_SETUPWIZARD, 155, 99, 62, 14, 
+        PUSHBUTTON      "~Suchen...", DID_FIND, 13, 99, 62, 14
+        PUSHBUTTON      "Setup Assistent", DID_SETUPWIZARD, 155, 99, 62, 14, 
                         NOT WS_VISIBLE
-        AUTOCHECKBOX    "Add PostScript header", ID_ADDPS, 13, 30, 204, 10, 
+        AUTOCHECKBOX    "PostScript Header anfÅgen", ID_ADDPS, 13, 30, 204, 10, 
                         BS_NOPOINTERFOCUS
     END
 END

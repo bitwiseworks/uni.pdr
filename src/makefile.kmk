@@ -41,12 +41,13 @@ uni_de_INST = bin/de/
 uni_de_SOURCES = $(uni_main_SOURCES) de/uni.rc
 uni_de_CLEAN = $(PATH_STAGE_BIN)/de/uni.pdr
 
-uni_CFLAGS = -Zomf
-uni_CFLAGS.release = -s -O3 -march=pentium -mtune=pentium4
+uni_CFLAGS = -Zdll
+uni_CFLAGS.release = -s -O0 -march=i686 -mtune=i686
 uni_CFLAGS.debug = -g -O0 -DDEBUG
-uni_LDFLAGS = -Zhigh-mem -Zomf -Zno-fork -Zmap -Zbin-files  
+uni_LDFLAGS = -Zhigh-mem -Zomf -Zno-fork -Zmap -Zbin-files KMK_NOIMPLIB
 uni_LDFLAGS.release = -s
 uni_LDFLAGS.debug = -g
+uni_LIBS += cx
 
 uni_DEFS =
 uni_INCS = ./h 
@@ -141,5 +142,4 @@ $(PATH_ROOT)/dist/$(PACKAGE_NAME): \
 	-ea2.cmd -e DEFAULT_PORT=UNI $(PATH_STAGE_BIN)/en/uni.pdr
 	-ea2.cmd -e DEFAULT_PORT=UNI $(PATH_STAGE_BIN)/de/uni.pdr
 	zip -9 -r $@ $(PATH_STAGE_BIN)/*
-
 

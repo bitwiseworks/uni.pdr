@@ -2,25 +2,25 @@
 
 :userdoc.
 
-.nameit symbol=os text='eCS (OS/2)'
-.nameit symbol=respdr text='Properties'
-.nameit symbol=unipdr text='Universal Port Driver fÅr &os.'
-.nameit symbol=usage text='Usage'
+.nameit symbol=os text='OS/2 (ArcaOS, eCS)'
+.nameit symbol=respdr text='Eigenschaften'
+.nameit symbol=unipdr text='Universeller Anschlusstreiber fÅr &os.'
+.nameit symbol=usage text='Benutzung'
 .nameit symbol=build text='&unipdr. version <$UNIPDR_VERSION> build <$UNIPDR_BUILD>'
 
 :title.&unipdr.
 
 :docprof toc=123456.
 .******************************************************
-:h1.Introduction
+:h1.EinfÅhrung
 :p.
 added later
 :p.
 added later
 .******************************************************
-:h1.License
+:h1.Lizenz
 :p.
-Samba is freely available under the GNU General Public License. You can get
+&unipdr. is freely available under the GNU General Public License. You can get
 the full sourcecode from our SVN repository, please refer to the &unipdr. Homepage for details about downloading the source.
 :p.
 So if you are using our driver we kindly ask you to support netlabs.org.

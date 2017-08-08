@@ -1,47 +1,46 @@
-                           eCS (OS/2) Universal Port Driver 
+                           Universal Port Driver for OS/2 (ArcaOS, eCS)
                            Version _VERSION_
                            Build _BUILD_
                            ________________________________
-                                  preliminary readme
-CONTENTS
+                                  VorlÑufiges Readme
+INHALT
 ________
 
- 1. Introduction
- 2. License
- 3. énderungshistorie
+ˇ1. Einleitung
+ˇ2. Lizenz
+ˇ3. énderungshistorie
 
 
-1. Introduction
+1. Einleitung
 _______________
 
-The eCS (OS/2) Universal Port Driver (UNI.PDR) redirects the datastream 
-from a printer port to a program. It has been tested to work with 
+Der Universal Port Driver (UNI.PDR) fÅr OS/2 leitet den Datenstrom von einem Drucker-Port 
+zu einem Programm weiter. Er wurde mit folgenden Programmen getestet:
 
-  - ePDF.exe
-  - smbspool.exe
-  
-successfully, but should work with any program being capable to accept a 
-file as an argument on the commandline.
+ˇˇ- ePDF.exe
+ˇˇ- smbspool.exe
+ˇˇ
+Er sollte mit jedem Programm arbeiten, das in der Lage ist, eine Datei als Argument auf 
+der Kommandozeile zu akzeptieren.
 
-uni.pdr is (like smb.pdr and cups.pdr) based upon Serge Starcks lpr32.pdr.
-Unlike the above 2 pdrs, which have the program to service hardcoded into
-the driver, uni.pdr allows program, parameters and working directory to be 
-configured individually.
+UNI.PDR basiert (wie SMB.PDR und CUPS.PDR) auf Serge Starcks lpr32.PDR.
+Im Gegensatz zu den oben genannten 2 pdrs, die das Programm im Treiber hart codiert haben,
+erlaubt UNI.PDR Programm, Parameter und Arbeitsverzeichnis zu sein individuell zu konfigurieren.
 
-When configuring the parameter field, make sure to have the %file% token
-on the commandline as a placeholder where the pdr will put the real filename
-during operation.
+Wenn Sie das Parameterfeld konfigurieren, stellen Sie sicher, dass ein %file% Token vorhanden ist
+auf der Kommandozeile als Platzhalter, an den der pdr den richtigen Dateinamen setzen wird
+wÑhrend der Operation.
 
-By and large uni.pdr has the same functionality that eRedMan provides. However
-while eRedMan has a smarter GUI right now and some nice assistant to create
-proper commandlines, uni.pdr is much more robust in operation. Especially
-uni.pdr honors the order of the jobs being sent to the port, while eRedMan
-does not.
+Im gro·en und ganzen hat UNI.PDR hat die gleiche FunktionalitÑt, die eRedMan bietet. aber
+wÑhrend eRedMan eine intelligentere GUI bietet und einige nette Assistenten bietet um die 
+richtigen Kommandozeilenparameter anzulegen, ist uni.PDR viel robuster im Betrieb. Insbesondere
+berÅcksichtigt uni.PDR die Reihenfolge der AuftrÑge, die an den Anschluss geschickt werden, 
+wÑhrend eRedMan dies nicht tut.
 
-2. License
+2. LIZENZ
 __________
 
-Same as smb.pdr, cups.pdr and lpr32.pdr. To be specified yet.
+Wie smb.PDR, cups.PDR und lpr32.PDR. .
 
 
 3. énderungshistorie
