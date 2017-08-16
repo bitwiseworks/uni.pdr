@@ -63,3 +63,7 @@ ____________________
    - rebuild with LIBC066.DLL
    - enable usage of high memory 
      (fixes crash with VIRTUALADDRESSLIMIT > 2048)
+     
+ v1.0 beta1:
+   - fix makefile.kmk
+   - new icon

@@ -1,4 +1,4 @@
-                           eCS (OS/2) Universal Port Driver 
+                           Universal Port Driver for OS/2 (ArcaOS, eCS)
                            Version _VERSION_
                            Build _BUILD_
                            ________________________________
@@ -38,8 +38,11 @@ ____________
      (as required by smbspool.exe and most likely other programs, too)
    - fixed token replacement logic (diver)
    
- v1.0 beta1:
+ v1.0 alpha4:
    - rebuild with LIBC066.DLL
    - enable usage of high memory 
      (fixes crash with VIRTUALADDRESSLIMIT > 2048)
 
+ v1.0 beta1:
+   - fix makefile.kmk
+   - new icon
