@@ -93,7 +93,7 @@ de/uni.rc : description.rc
 description.rc: config.kmk
 	@echo Writing build level informations
 	@cp description.rc_ description.rc
-	@BldLevelInf0.cmd $(VERSION) $(BUILD)
+	cmd /c '..\buildTools\BldLevelInf.cmd -V"$(VERSION)" -N"Netlabs.org" -D"UNIPDR - Universal Port Driver Build $(BUILD)" -Len description.rc'
 
 
 # compile english help file
@@ -139,7 +139,7 @@ $(PATH_ROOT)/dist/$(PACKAGE_NAME): \
 		$(PATH_STAGE_BIN)/uni.pdr
 	$(QUIET)$(MKDIR) -p $(PATH_ROOT)/dist                              
 	$(QUIET)$(RM) -f $@
-	-ea2.cmd -e DEFAULT_PORT=UNI $(PATH_STAGE_BIN)/en/uni.pdr
-	-ea2.cmd -e DEFAULT_PORT=UNI $(PATH_STAGE_BIN)/de/uni.pdr
+	-../buildTools/ea2.cmd -e DEFAULT_PORT=UNI $(PATH_STAGE_BIN)/en/uni.pdr
+	-../buildTools/ea2.cmd -e DEFAULT_PORT=UNI $(PATH_STAGE_BIN)/de/uni.pdr
 	zip -9 -r $@ $(PATH_STAGE_BIN)/*
 
