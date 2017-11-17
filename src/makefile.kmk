@@ -54,7 +54,7 @@ uni_INCS = ./h
 
 uni_DLLSUFF = .pdr
 
-uni_CLEAN = description.rc $(PATH_STAGE_BIN)/uni.pdr
+uni_CLEAN = description.rc $(PATH_STAGE_BIN)/en/uni.pdr
 
 #build other files en (e.g. help)
 OTHERS = $(PATH_STAGE_BIN)/en/uni.hlp $(PATH_STAGE_BIN)/en/readme.txt
@@ -77,8 +77,8 @@ ifeq ($(BUILD_TYPE),debug)
 else
   PACKAGE_NAME = uni-$(subst .,_,$(VERSION))-$(BUILD).zip
 endif
-PACKING += $(PATH_ROOT)/dist/$(PACKAGE_NAME)
-OTHER_CLEAN += $(PATH_ROOT)/dist/$(PACKAGE_NAME)
+PACKING += $(PATH_OUT)/dist/$(PACKAGE_NAME)
+OTHER_CLEAN += $(PATH_OUT)/dist/$(PACKAGE_NAME)
 
 # now include standard code
 include $(PATH_KBUILD)/rules.kMk
@@ -132,11 +132,11 @@ version.h: Config.kmk version.h_
 		> version.h
 
 # final: zip all files!
-$(PATH_ROOT)/dist/$(PACKAGE_NAME): \
-		$(PATH_STAGE_BIN)/uni.pdr
-	$(QUIET)$(MKDIR) -p $(PATH_ROOT)/dist                              
+$(PATH_OUT)/dist/$(PACKAGE_NAME): \
+		$(PATH_STAGE_BIN)/en/uni.pdr $(PATH_STAGE_BIN)/de/uni.pdr
+	$(QUIET)$(MKDIR) -p $(PATH_OUT)/dist                              
 	$(QUIET)$(RM) -f $@
 	-../buildTools/ea2.cmd -e DEFAULT_PORT=UNI $(PATH_STAGE_BIN)/en/uni.pdr
 	-../buildTools/ea2.cmd -e DEFAULT_PORT=UNI $(PATH_STAGE_BIN)/de/uni.pdr
-	zip -9 -r $@ $(PATH_STAGE_BIN)/*
+	$(QUIET)$(REDIRECT) -C $(PATH_STAGE_BIN) -- zip -9Sr $@ .
 
