@@ -10,4 +10,5 @@
 #
 VERSION	= 1.0.0
 BUILD	= alpha1
+VENDOR  = netlabs.org
 TOOLKIT = f:/dev/toolkit

@@ -93,14 +93,14 @@ de/uni.rc : description.rc
 description.rc: config.kmk
 	@echo Writing build level informations
 	@cp description.rc_ description.rc
-	cmd /c '..\buildTools\BldLevelInf.cmd -V"$(VERSION)" -N"Netlabs.org" -D"UNIPDR - Universal Port Driver Build $(BUILD)" -Len description.rc'
+	$(QUIET)cmd /c '..\buildTools\BldLevelInf.cmd -V"$(VERSION)" -N"$(VENDOR)" -D"UNIPDR - Universal Port Driver Build $(BUILD)" -Len description.rc'
 
 
 # compile english help file
 $(PATH_STAGE_BIN)/en/uni.hlp: ./en/uni.ipf version.h Config.kmk
 	-@mkdir $(PATH_OBJ)
 	-@mkdir $(PATH_OBJ)\en
-	@ppwizard.cmd ./en/uni.ipf /Pack:N /output:$(PATH_OBJ)/en/uni.ipf /other /WarningsRc:0
+	@ppwizard.cmd ./en/uni.ipf /Pack:N /output:$(PATH_OBJ)/en/uni.ipf /other /WarningsRc:0 /Define:en /Define:ipf
 	-@mkdir $(PATH_STAGE_BIN)
 	-@mkdir $(PATH_STAGE_BIN)\en
 	$(TOOLKIT)\bin\ipfc.exe $(PATH_OBJ)/en/uni.ipf $(PATH_STAGE_BIN)/en/uni.hlp /COUNTRY=001 /CODEPAGE=850
@@ -109,29 +109,26 @@ $(PATH_STAGE_BIN)/en/uni.hlp: ./en/uni.ipf version.h Config.kmk
 $(PATH_STAGE_BIN)/de/uni.hlp: ./de/uni.ipf version.h Config.kmk
 	-@mkdir $(PATH_OBJ)
 	-@mkdir $(PATH_OBJ)\de
-	@ppwizard.cmd ./de/uni.ipf /Pack:N /output:$(PATH_OBJ)/de/uni.ipf /other /WarningsRc:0
+	@ppwizard.cmd ./de/uni.ipf /Pack:N /output:$(PATH_OBJ)/de/uni.ipf /other /WarningsRc:0 /Define:de /Define:ipf
 	-@mkdir $(PATH_STAGE_BIN)
 	-@mkdir $(PATH_STAGE_BIN)\de
 	$(TOOLKIT)\bin\ipfc.exe $(PATH_OBJ)/de/uni.ipf $(PATH_STAGE_BIN)/de/uni.hlp /COUNTRY=001 /CODEPAGE=850
 
 
 # substitute macros in docs en
-$(PATH_STAGE_BIN)/en/readme.txt: Config.kmk en/readme.txt
-	$(QUIET)$(SED) "s;_VERSION_;$(VERSION);g" en/readme.txt \
-		| $(SED) "s;_BUILD_;$(BUILD);g" \
-		> $(PATH_STAGE_BIN)/en/readme.txt
+$(PATH_STAGE_BIN)/en/readme.txt: Config.kmk en/readme.txt version.h changelog.txt
+	@ppwizard.cmd en/readme.txt /option:KeepIndent=On /option:LeaveBlankLines=On /Pack:N /output:$(PATH_STAGE_BIN)/en/readme.txt /other /WarningsRc:0 /Define:en /Define:txt
 
 # substitute macros in docs de
-$(PATH_STAGE_BIN)/de/readme.txt: Config.kmk de/readme.txt
-	$(QUIET)$(SED) "s;_VERSION_;$(VERSION);g" de/readme.txt \
-		| $(SED) "s;_BUILD_;$(BUILD);g" \
-		> $(PATH_STAGE_BIN)/de/readme.txt
+$(PATH_STAGE_BIN)/de/readme.txt: Config.kmk de/readme.txt version.h changelog.txt
+	@ppwizard.cmd de/readme.txt /option:KeepIndent=On /option:LeaveBlankLines=On /Pack:N /output:$(PATH_STAGE_BIN)/de/readme.txt /other /WarningsRc:0 /Define:de /Define:txt
 
 # substitute macros in version.h
 version.h: Config.kmk version.h_
 	$(SED) "s;_VERSION_;$(VERSION);g" version.h_ \
 		| $(SED) "s;_WPIVERSION_;$(subst .,\\\,$(VERSION));g" \
 		| $(SED) "s;_BUILD_;$(BUILD);g" \
+		| $(SED) "s;_VENDOR_;$(VENDOR);g" \
 		> version.h
 
 # final: zip all files!

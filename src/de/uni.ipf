@@ -2,7 +2,7 @@
 
 :userdoc.
 
-.nameit symbol=os text='OS/2 (ArcaOS, eCS)'
+.nameit symbol=os text='<$OS>'
 .nameit symbol=respdr text='Eigenschaften'
 .nameit symbol=unipdr text='Universeller Anschlusstreiber fr &os.'
 .nameit symbol=usage text='Benutzung'
@@ -52,31 +52,12 @@ later added
 :p.
 &build.
 .******************************************************
-:h1.History
-:p.History of the &unipdr.
-:h2 res=001.Version 1.0
-:p.
+:h1.Entwicklungsgeschichte
+:p.Entwicklungsgeschichte des &unipdr.
 :ul.
-:li.Version 1.0 alpha 1
-:ul.
-:li.changelog created
-:li.got it working
-:eul.   
-:li.Version 1.0 alpha2
-:ul.find button added
-:ul.working directory added
-:eul.   
-:li.Version 1.0 alpha3
-:ul.
-:li.parameters are split into separate parameters internally (as required by smbspool.exe and most likely other programs, too)
-:li.fixed token replacement logic (diver)
+:li.:link reftype=hd res=011.Version 1.0:elink.
 :eul.
-:li.Version 1.0 beta1
-:ul.
-:li.rebuild with LIBC066.DLL
-:li.enable usage of high memory (fixes crash with VIRTUALADDRESSLIMIT > 2048)
-:eul.
-:eul.
+#include <changelog.txt>
 .******************************************************
 :h1.Credit
 :ul.

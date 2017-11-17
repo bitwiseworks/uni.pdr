@@ -1,0 +1,143 @@
+#ifdef txt
+#define LI -
+#define UL *
+#endif
+#ifndef txt
+#define LI :li.
+#define UL :li.
+#endif
+#ifdef txt
+Version 1.0
+#endif
+#ifndef txt
+:h2 res=011.Version 1.0
+:p.
+:ul.
+#endif  
+ <$UL>alpha1:
+#ifndef txt
+:ul compact.
+#endif
+#ifdef en
+   <$LI> changelog created
+   <$LI> got it working
+#endif
+#ifdef fr
+   <$LI> changelog created
+   <$LI> got it working
+#endif
+#ifdef de
+   <$LI> changelog created
+   <$LI> got it working
+#endif
+#ifdef it
+   <$LI> changelog created
+   <$LI> got it working
+#endif
+#ifndef txt
+:eul.
+#endif
+ 
+ <$UL>alpha2:
+#ifndef txt
+:ul compact.
+#endif
+#ifdef en
+   <$LI> find button added
+   <$LI> working directory added
+#endif
+#ifdef fr
+   <$LI> find button added
+   <$LI> working directory added
+#endif
+#ifdef de
+   <$LI> find button added
+   <$LI> working directory added
+#endif
+#ifdef it
+   <$LI> find button added
+   <$LI> working directory added
+#endif
+#ifndef txt
+:eul.
+#endif
+
+ <$UL>alpha3:
+#ifndef txt
+:ul compact.
+#endif
+#ifdef en
+   <$LI> parameters are split into separate parameters internally
+     (as required by smbspool.exe and most likely other programs, too)
+   <$LI> fixed token replacement logic (diver)
+#endif
+#ifdef fr
+   <$LI> parameters are split into separate parameters internally
+     (as required by smbspool.exe and most likely other programs, too)
+   <$LI> fixed token replacement logic (diver)
+#endif
+#ifdef de
+   <$LI> parameters are split into separate parameters internally
+     (as required by smbspool.exe and most likely other programs, too)
+   <$LI> fixed token replacement logic (diver)
+#endif
+#ifdef it
+   <$LI> parameters are split into separate parameters internally
+     (as required by smbspool.exe and most likely other programs, too)
+   <$LI> fixed token replacement logic (diver)
+#endif
+#ifndef txt
+:eul.
+#endif
+   
+ <$UL>alpha4:
+#ifndef txt
+:ul compact.
+#endif
+#ifdef en
+   <$LI> rebuild with LIBC066.DLL
+   <$LI> enable usage of high memory 
+     (fixes crash with VIRTUALADDRESSLIMIT > 2048)     
+#endif
+#ifdef fr
+   <$LI> rebuild with LIBC066.DLL
+   <$LI> enable usage of high memory 
+     (fixes crash with VIRTUALADDRESSLIMIT > 2048)     
+#endif
+#ifdef de
+   <$LI> rebuild with LIBC066.DLL
+   <$LI> enable usage of high memory 
+     (fixes crash with VIRTUALADDRESSLIMIT > 2048)     
+#endif
+#ifdef it
+   <$LI> rebuild with LIBC066.DLL
+   <$LI> enable usage of high memory 
+     (fixes crash with VIRTUALADDRESSLIMIT > 2048)     
+#endif
+#ifndef txt
+:eul.
+#endif
+   
+ <$UL>beta1:
+#ifndef txt
+:ul compact.
+#endif
+#ifdef en
+   <$LI> fix makefile.kmk
+   <$LI> new icon
+#endif
+#ifdef fr
+   <$LI> fix makefile.kmk
+   <$LI> new icon
+#endif
+#ifdef de
+   <$LI> fix makefile.kmk
+   <$LI> new icon
+#endif
+#ifdef it
+   <$LI> fix makefile.kmk
+   <$LI> new icon
+#endif
+#ifndef txt
+:eul.:eul.
+#endif
